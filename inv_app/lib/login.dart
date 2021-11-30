@@ -101,9 +101,9 @@ class _LoginState extends State<Login> {
             //LogIn Button
             Padding(
               padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 30, bottom: 0),
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: Container(
-                height: 50,
+                height: 40,
                 width: 250,
                 decoration: BoxDecoration(
                     color: Colors.blue,
@@ -124,7 +124,7 @@ class _LoginState extends State<Login> {
             //Forgot password Button
             Padding(
               padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  left: 15.0, right: 15.0, top: 10, bottom: 0),
               child: TextButton(
                 onPressed: () {
                   Navigator.push(context,
@@ -139,7 +139,7 @@ class _LoginState extends State<Login> {
 
             //Don't have an account
             const SizedBox(
-              height: 70,
+              height: 40,
             ),
             const Text("Don't have an account?"),
             Padding(
@@ -147,7 +147,7 @@ class _LoginState extends State<Login> {
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: Container(
                 height: 40,
-                width: 150,
+                width: 250,
                 decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20)),
@@ -158,6 +158,39 @@ class _LoginState extends State<Login> {
                   },
                   child: const Text(
                     'SIGN UP',
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              ),
+            ),
+
+            //OR
+            const Padding(
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 10, bottom: 0),
+              child: Text(
+                'OR',
+                style: TextStyle(color: Colors.black, fontSize: 15),
+              ),
+            ),
+
+            //LogIn Google
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+              child: Container(
+                height: 40,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const Modules()));
+                  },
+                  child: const Text(
+                    'Login with Google',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
