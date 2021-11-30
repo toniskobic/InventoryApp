@@ -1,25 +1,40 @@
 import 'package:flutter/material.dart';
 import 'modules.dart';
 
-class LoginDemo extends StatefulWidget {
-  const LoginDemo({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
   @override
-  _LoginDemoState createState() => _LoginDemoState();
+  _LoginState createState() => _LoginState();
 }
 
-class _LoginDemoState extends State<LoginDemo> {
+class _LoginState extends State<Login> {
+  //Varijable
+  bool passwordHidden = true;
+
   @override
   Widget build(BuildContext context) {
+    //Dizajn
     return Scaffold(
       backgroundColor: Colors.white,
+
+      //App bar
       appBar: AppBar(
         title: const Text(
           "LogIn",
           style: TextStyle(
               color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
         ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const Modules()));
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         centerTitle: true,
       ),
+
+      //Tijelo LogIn-a
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -47,7 +62,9 @@ class _LoginDemoState extends State<LoginDemo> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'name@email.com'),
+                    border: OutlineInputBorder(),
+                    labelText: 'name@email.com',
+                    prefixIcon: Icon(Icons.email)),
               ),
             ),
 
@@ -64,12 +81,20 @@ class _LoginDemoState extends State<LoginDemo> {
             ),
 
             //TextBox za lozinku
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
-                obscureText: true,
+                obscureText: !passwordHidden,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: '********'),
+                    border: const OutlineInputBorder(),
+                    labelText: '********',
+                    prefixIcon: const Icon(Icons.lock),
+                    suffix: InkWell(
+                      onTap: _togglePasswordView,
+                      child: Icon(passwordHidden
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                    )),
               ),
             ),
 
@@ -142,5 +167,11 @@ class _LoginDemoState extends State<LoginDemo> {
         ),
       ),
     );
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      passwordHidden = !passwordHidden;
+    });
   }
 }
