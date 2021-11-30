@@ -1,6 +1,136 @@
 import 'package:flutter/material.dart';
 import 'modules.dart';
 
+class LoginForm extends StatefulWidget {
+  const LoginForm({Key? key}) : super(key: key);
+  @override
+  LoginFormState createState() {
+    return LoginFormState();
+  }
+}
+
+class LoginFormState extends State<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  //Varijable
+  bool passwordHidden = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Tekst Email
+          const Padding(
+            padding:
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 0, bottom: 5),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('EMAIL:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
+            ),
+          ),
+
+          //TextBox za email
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'name@email.com',
+                prefixIcon: Icon(Icons.email),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Enter your email';
+                }
+                return null;
+              },
+            ),
+          ),
+
+          //Tekst Password
+          const Padding(
+            padding:
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('PASSWORD:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
+            ),
+          ),
+
+          //TextBox za lozinku
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextFormField(
+              obscureText: !passwordHidden,
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: '********',
+                  prefixIcon: const Icon(Icons.lock),
+                  suffix: InkWell(
+                    onTap: _togglePasswordView,
+                    child: Icon(passwordHidden
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                  )),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Enter your password';
+                }
+                return null;
+              },
+            ),
+          ),
+
+          //LogIn Button
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 15, bottom: 0),
+            child: Center(
+              child: Container(
+                height: 40,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Processing Data')),
+                      );
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const Modules()));
+                    }
+                  },
+                  child: const Text(
+                    'LOGIN',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //Funkcije
+  //Prikaz/Sakrivanje lozinke
+  void _togglePasswordView() {
+    setState(() {
+      passwordHidden = !passwordHidden;
+    });
+  }
+}
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
   @override
@@ -10,6 +140,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   //Varijable
   bool passwordHidden = true;
+  var lozinka = "";
+  var email = "";
 
   @override
   Widget build(BuildContext context) {
@@ -40,86 +172,13 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             //Slika loga
             const Padding(
-              padding: EdgeInsets.only(top: 50.0, bottom: 50),
+              padding: EdgeInsets.only(top: 50.0, bottom: 40),
               child: Center(
                   child: Image(image: AssetImage('asset/images/logo.png'))),
             ),
 
-            //Tekst Email
-            const Padding(
-              padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 0, bottom: 5),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text('EMAIL:',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(color: Colors.black, fontSize: 15)),
-              ),
-            ),
-
-            //TextBox za email
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'name@email.com',
-                    prefixIcon: Icon(Icons.email)),
-              ),
-            ),
-
-            //Tekst Password
-            const Padding(
-              padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text('PASSWORD:',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(color: Colors.black, fontSize: 15)),
-              ),
-            ),
-
-            //TextBox za lozinku
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                obscureText: !passwordHidden,
-                decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    labelText: '********',
-                    prefixIcon: const Icon(Icons.lock),
-                    suffix: InkWell(
-                      onTap: _togglePasswordView,
-                      child: Icon(passwordHidden
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                    )),
-              ),
-            ),
-
-            //LogIn Button
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: Container(
-                height: 40,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Modules()));
-                  },
-                  child: const Text(
-                    'LOGIN',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
-            ),
+            //LogIn Obrazac
+            const LoginForm(),
 
             //Forgot password Button
             Padding(
@@ -189,20 +248,10 @@ class _LoginState extends State<Login> {
               ),
             ),
 
-            //OR
-            const Padding(
-              padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 10, bottom: 0),
-              child: Text(
-                'OR',
-                style: TextStyle(color: Colors.black, fontSize: 15),
-              ),
-            ),
-
             //LogIn Google
             Padding(
               padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  left: 15.0, right: 15.0, top: 15, bottom: 15),
               child: Container(
                 height: 40,
                 width: 250,
@@ -227,9 +276,21 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void _togglePasswordView() {
-    setState(() {
-      passwordHidden = !passwordHidden;
-    });
-  }
+  //Funkcije
 }
+
+//Provjera da li postoji unešena email adresa kako bi se na nju mogla poslati nova lozinka
+bool dohvatiEmailZaNovuLozinku(var email) {
+  bool emailExists = false;
+
+  return emailExists;
+}
+
+//Provjera da li postoji korisnik sa unešenom adresom i lozinkom
+bool autentificirajKorisnika(var email, var lozinka) {
+  bool userExists = false;
+
+  return userExists;
+}
+
+//WIDGETI
