@@ -127,8 +127,33 @@ class _LoginState extends State<Login> {
                   left: 15.0, right: 15.0, top: 10, bottom: 0),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const Modules()));
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: const Text('New password request'),
+                          content: const Text(
+                              'New password will be send to your email address. Are you sure you want to continue?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text('Continue'),
+                            ),
+                          ],
+                        );
+                      }).then((exit) {
+                    if (exit == null) return;
+
+                    if (exit) {
+                      // user pressed Continue button
+                    } else {
+                      // user pressed Cancel button
+                    }
+                  });
                 },
                 child: const Text(
                   'Forgot Password?',
