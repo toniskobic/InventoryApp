@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../modules.dart';
+import 'package:inv_app/Views/Forms/registration.dart';
+import 'package:inv_app/Views/modules.dart';
 import 'package:inv_app/api/loginService.dart';
-import 'package:inv_app/users.dart';
+import 'package:inv_app/Classes/user.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -166,13 +167,6 @@ class _LoginState extends State<Login> {
           style: TextStyle(
               color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
         ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => const Modules()));
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
         centerTitle: true,
       ),
 
@@ -247,8 +241,10 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Modules()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const Registration()));
                   },
                   child: const Text(
                     'SIGN UP',

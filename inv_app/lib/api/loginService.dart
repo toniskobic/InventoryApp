@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
-import 'package:inv_app/users.dart';
+import 'package:inv_app/Classes/user.dart';
 import 'package:flutter/material.dart';
-import '../modules.dart';
+import '../Views/modules.dart';
 
 /*
 logIn(User pUser) async {

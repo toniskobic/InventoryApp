@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
-import 'package:inv_app/users.dart';
+import 'package:inv_app/Classes/user.dart';
 
 Future signUp(User pUser) async {
   final response = await http.post(Uri.parse(SIGN_UP), body: {

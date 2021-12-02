@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inv_app/Views/pocetna_stranica.dart';
 
 class Modules extends StatefulWidget {
   const Modules({Key? key}) : super(key: key);
@@ -22,7 +23,10 @@ class _ModulesState extends State<Modules> {
               color: Colors.blue, borderRadius: BorderRadius.circular(10)),
           child: TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HomepageWidget()));
             },
             child: const Text(
               'Enter',

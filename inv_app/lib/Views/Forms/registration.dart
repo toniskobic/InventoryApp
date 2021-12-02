@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:inv_app/Forms/login.dart';
+import 'package:inv_app/Views/Forms/login.dart';
 import 'package:inv_app/api/registracijaService.dart';
-import 'package:inv_app/users.dart';
+import 'package:inv_app/Classes/user.dart';
 import 'package:get/get.dart';
 
 /* class MyForm extends StatefulWidget {
@@ -237,7 +237,7 @@ class _RegistrationState extends State<Registration> {
                       child: ElevatedButton(
                           child: const Text("Login"),
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pop(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const Login()));
