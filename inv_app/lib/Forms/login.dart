@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import '../modules.dart';
-import 'package:http/http.dart' as http;
 import 'package:inv_app/api/loginService.dart';
-import '../Assets/constants.dart' as Constants;
 import 'package:inv_app/users.dart';
-import 'dart:async';
-import 'dart:convert';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -20,7 +16,7 @@ class LoginFormState extends State<LoginForm> {
 
   bool passwordHidden = true;
 
-  User user = User(email: "", password: "");
+  User user = User();
   void _logIn() {
     final form = _formKey.currentState;
     if (form!.validate()) {
@@ -180,7 +176,7 @@ class _LoginState extends State<Login> {
         centerTitle: true,
       ),
 
-      //Tijelo 
+      //Tijelo
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inv_app/Registration/login.dart';
+import 'package:inv_app/Forms/login.dart';
 import 'package:inv_app/api/registracijaService.dart';
 import 'package:inv_app/users.dart';
 import 'package:get/get.dart';
