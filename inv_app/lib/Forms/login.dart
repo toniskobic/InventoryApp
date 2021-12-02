@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'modules.dart';
+import '../modules.dart';
+import 'package:http/http.dart' as http;
+import 'package:inv_app/api/loginService.dart';
+import '../Assets/constants.dart' as Constants;
+import 'package:inv_app/users.dart';
+import 'dart:async';
+import 'dart:convert';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -12,8 +18,16 @@ class LoginForm extends StatefulWidget {
 class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
 
-  //Varijable
   bool passwordHidden = true;
+
+  User user = User(email: "", password: "");
+  void _logIn() {
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      LoginRequest(user, context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +42,7 @@ class LoginFormState extends State<LoginForm> {
                 EdgeInsets.only(left: 15.0, right: 15.0, top: 0, bottom: 5),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text('EMAIL:',
+              child: Text('EMAIL/USERNAME:',
                   textAlign: TextAlign.left,
                   style: TextStyle(color: Colors.black, fontSize: 15)),
             ),
@@ -38,6 +52,7 @@ class LoginFormState extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
+              onSaved: (val) => user.email = val,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'name@email.com',
@@ -45,7 +60,7 @@ class LoginFormState extends State<LoginForm> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Enter your email';
+                  return 'Enter your email or username';
                 }
                 return null;
               },
@@ -68,6 +83,7 @@ class LoginFormState extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
+              onSaved: (val) => user.password = val,
               obscureText: !passwordHidden,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -101,13 +117,11 @@ class LoginFormState extends State<LoginForm> {
                     borderRadius: BorderRadius.circular(20)),
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => const Modules()));
-                    }
+                    _logIn();
+                    /*
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const Modules()));
+                    */
                   },
                   child: const Text(
                     'LOGIN',
@@ -166,7 +180,7 @@ class _LoginState extends State<Login> {
         centerTitle: true,
       ),
 
-      //Tijelo LogIn-a
+      //Tijelo 
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -275,22 +289,4 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-
-  //Funkcije
 }
-
-//Provjera da li postoji unešena email adresa kako bi se na nju mogla poslati nova lozinka
-bool dohvatiEmailZaNovuLozinku(var email) {
-  bool emailExists = false;
-
-  return emailExists;
-}
-
-//Provjera da li postoji korisnik sa unešenom adresom i lozinkom
-bool autentificirajKorisnika(var email, var lozinka) {
-  bool userExists = false;
-
-  return userExists;
-}
-
-//WIDGETI
