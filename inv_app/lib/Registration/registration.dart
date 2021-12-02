@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:inv_app/Registration/login.dart';
 import 'package:inv_app/api/registracijaService.dart';
-import '../Assets/constants.dart' as Constants;
 import 'package:inv_app/users.dart';
-import 'dart:async';
-import 'dart:convert';
+import 'package:get/get.dart';
 
 /* class MyForm extends StatefulWidget {
   int id;
@@ -28,14 +25,17 @@ class _RegistrationState extends State<Registration> {
   final formKey = GlobalKey<FormState>();
   bool passwordHidden = true;
 
-  User user =
-      User(name: "ff", surname: "", username: "", email: "", password: "");
+  User user = User();
 
   void _signUp() {
     final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
-      signUp(user);
+      signUp(user).then((response) => {print(response)}).catchError((e) {
+        Get.snackbar('Error', '$e',
+            duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
+        print('$e');
+      });
     }
   }
 
@@ -117,8 +117,34 @@ class _RegistrationState extends State<Registration> {
                     onSaved: (val) => user.surname = val,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Hemingway',
+                        hintText: 'Hemingway',
                         prefixIcon: Icon(Icons.person)),
+                  ),
+                ),
+
+                //Username
+                const Padding(
+                  padding: EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 15.0, bottom: 5),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('USERNAME:',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontFamily: _fontFamily,
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: TextFormField(
+                    onSaved: (val) => user.username = val,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'jhemingway',
+                        prefixIcon: Icon(Icons.account_circle_outlined)),
                   ),
                 ),
 
