@@ -22,17 +22,7 @@ class HomeFormState extends State<HomeForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-Text(
-              'Gunnar',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color.fromRGBO(123, 135, 148, 1),
-                  fontFamily: 'Mulish',
-                  fontSize: 18,
-                  letterSpacing: 0,
-                  fontWeight: FontWeight.normal,
-                  height: 1.5),
-            ),
+           
           //EditProfile Button
           Padding(
             padding: const EdgeInsets.only(
@@ -167,10 +157,12 @@ class _ProfileState extends State<ProfileDetails> {
           children: <Widget>[
             //Slika profila
             const Padding(
-              padding: EdgeInsets.only(top: 50.0, bottom: 40),
+              padding: EdgeInsets.only(top: 0.0, bottom: 20),
               child: Center(
-                  child: Image(image: AssetImage('asset/images/profile_picture.png'))),
+                  child: Image(image: AssetImage('asset/images/profilna.png'))),
+                  
             ),
+              
 
             //LogIn Obrazac
             const HomeForm(),
