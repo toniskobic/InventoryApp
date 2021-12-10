@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inv_app/Views/Forms/login.dart';
 
+import 'Views/profile.dart';
+
 void main() {
   runApp(const MyApp());
 }
