@@ -5,6 +5,7 @@ import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/change_password.dart';
 import 'package:inv_app/Views/edit_profile.dart';
 
+import 'Views/notifications.dart';
 import 'Views/profile_details.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ChangePassword(),
+      home: Login(),
     );
   }
 }
