@@ -4,6 +4,7 @@ import 'package:inv_app/Views/Forms/login.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/change_password.dart';
 import 'package:inv_app/Views/edit_profile.dart';
+import 'package:inv_app/Views/resource_details.dart';
 
 import 'Views/notifications.dart';
 import 'Views/profile_details.dart';
