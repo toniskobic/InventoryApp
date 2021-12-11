@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inv_app/Views/Forms/login.dart';
+import 'package:inv_app/Views/Forms/registration.dart';
+import 'package:inv_app/Views/change_password.dart';
 import 'package:inv_app/Views/edit_profile.dart';
 
 import 'Views/profile_details.dart';
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: EditProfile(),
+      home: ChangePassword(),
     );
   }
 }
