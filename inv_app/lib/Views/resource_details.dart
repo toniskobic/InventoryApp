@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/modules.dart';
 import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
 
 class ResourceDetailsForm extends StatefulWidget {
   const ResourceDetailsForm({Key? key}) : super(key: key);
@@ -42,9 +45,40 @@ class ResourceDetails extends StatefulWidget {
 }
 
 class _ResourceDetailsState extends State<ResourceDetails> {
+  
+  DateTime date = DateTime.now();
+ DateTimeRange dateRange = DateTimeRange(start: DateTime(DateTime.now().year-5), end: DateTime(DateTime.now().year+5));
+ 
+//ispisuje selektirani datum u button
+String getText(){
+  if(date==null){
+    return 'Select Date';
+  }
+  else{
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+}
+//ispisuje datum from
+String getFrom(){
+  if(dateRange==null){
+    return 'Loan date ';
+  }else{
+    return DateFormat('dd/MM/yyyy').format(dateRange.start);
+  }
+}
+
+//ispisuje datum until
+String getUntil(){
+  if(dateRange==null){
+    return 'Expected return date';
+  }else{
+    return DateFormat('dd/MM/yyyy').format(dateRange.end);
+  }
+}
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     //Dizajn
     return Scaffold(
       backgroundColor: Colors.white,
@@ -96,26 +130,53 @@ class _ResourceDetailsState extends State<ResourceDetails> {
           endIndent: 20,
         ),
 
-         //datum VRATITI SE OVJDE 
-            const Padding(
-            padding:
-                EdgeInsets.only(left: 15.0, right: 15.0, top: 0, bottom: 0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Loan date      ->      Expected return date',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black, fontSize: 20)),
-                  
-            ),
-            
-          ),
-           const Padding(
+         //datum 
+            Center(
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+          SizedBox(width: 5),
+      Text('Loan date', textAlign: TextAlign.left,style: TextStyle(color: Colors.black, fontSize: 20),),
+      
+      Icon(Icons.arrow_right_alt_outlined, size: 35, color: Colors.blue),
+        SizedBox(width: 5),
+      Text('Expected return date', textAlign: TextAlign.left,style: TextStyle(color: Colors.black, fontSize: 20),),
+    ],
+  )
+),
+          
+Center(
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+          SizedBox(width: 5),
+      RaisedButton(
+        color: Colors.white,
+        child: Text(getFrom()),
+        onPressed: ()=>pickDateRange(context),
+      ),
+      Icon(Icons.arrow_right_alt_outlined, size: 35, color: Colors.blue),
+        SizedBox(width: 5),
+      RaisedButton(
+        color: Colors.white,
+        child: Text(getUntil()),
+        onPressed: ()=>pickDateRange(context),
+      ),
+    ],
+  )
+),
+
+const Padding(
             padding:
                 EdgeInsets.only(left: 20.0, right: 30.0, top: 0, bottom: 0),
             child: Align(
               alignment: Alignment.centerRight,
-              child:  Icon(Icons.date_range_rounded, size: 35, color: Colors.blue,)
-                  
+              child: Icon(Icons.date_range_rounded, size: 35, color: Colors.blue,)
+
+              /* ne razumijem zasto taj on pressed ne radi al to bi bilo idealno rjesenje
+              IconButton(
+                onPressed: ()=>pickDateRange(context), 
+                icon: Icon(Icons.date_range_rounded, size: 35, color: Colors.blue,))*/  
             ),
             
           ),
@@ -220,8 +281,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
     children: <Widget>[
       
       RaisedButton(
-        color: Colors.blue,
-
+        color: Colors.lightBlue,
         child: Text("RETURN"),
         onPressed: null,
       ),
@@ -231,6 +291,8 @@ class _ResourceDetailsState extends State<ResourceDetails> {
         child: Text("BORROW"),
         onPressed: null,
       ),
+       SizedBox(width: 5),
+    
     ],
   ),
 )
@@ -255,5 +317,35 @@ class _ResourceDetailsState extends State<ResourceDetails> {
         ],
       ),
     );
+  }
+
+  Future pickDate(BuildContext context) async {
+    final initalDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year-5),
+      lastDate: DateTime(DateTime.now().year+5),
+      );
+      if (newDate==null) return;
+      
+      setState(()=> date= newDate);
+  }
+
+  Future pickDateRange(BuildContext context) async{
+    final initalDateRange=DateTimeRange(
+      start: DateTime.now(),
+      end: DateTime.now().add(Duration(hours:24*3)),
+    );
+    final newDateRange = await showDateRangePicker(
+        context: context,
+        firstDate: DateTime(DateTime.now().year-5),
+        lastDate: DateTime(DateTime.now().year+5),
+        initialDateRange: dateRange,
+    );
+
+    if(newDateRange==null) return;
+
+   setState(()=>dateRange=newDateRange);
   }
 }
