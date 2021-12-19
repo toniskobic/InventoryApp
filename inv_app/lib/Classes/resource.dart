@@ -20,12 +20,12 @@ class Resource {
       this.tags */
   });
 
-  factory Resource.fromJson(Map<String, dynamic> parsedJson) {
+  factory Resource.fromJson(Map<String, dynamic> data) {
     return Resource(
-      id: parsedJson['id'],
-      name: parsedJson['name'],
-      description: parsedJson['description'],
-      quantity: parsedJson['quantity'],
+      id: data['id'],
+      name: data['name'],
+      description: data['description'],
+      quantity: data['quantity'],
       /* location: parsedJson['location'],
         type: parsedJson['type'],
         tags: parsedJson['tags'] */

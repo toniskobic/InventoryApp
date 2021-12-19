@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:inv_app/Views/Forms/registration.dart';
-import 'package:inv_app/Views/modules.dart';
-import 'package:inv_app/api/loginService.dart';
-import 'package:inv_app/Classes/user.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DateRangePickerForm extends StatefulWidget {
@@ -17,8 +12,6 @@ class DateRangePickerForm extends StatefulWidget {
 class DateRangePickerFormState extends State<DateRangePickerForm> {
   final _formKey = GlobalKey<FormState>();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -26,14 +19,13 @@ class DateRangePickerFormState extends State<DateRangePickerForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           const SizedBox(
-              height: 40,
-            ), 
+          const SizedBox(
+            height: 40,
+          ),
         ],
       ),
     );
   }
-
 }
 
 class DateRangePicker extends StatefulWidget {
@@ -43,15 +35,15 @@ class DateRangePicker extends StatefulWidget {
 }
 
 class _DateRangePickerState extends State<DateRangePicker> {
-  DateRangePickerController _dateRangePickerController = DateRangePickerController();
+  DateRangePickerController _dateRangePickerController =
+      DateRangePickerController();
 
   @override
-  Widget build(BuildContext context) 
-  {
+  Widget build(BuildContext context) {
     //Dizajn
     return SafeArea(
-      child: Scaffold(
-         backgroundColor: Colors.white,
+        child: Scaffold(
+      backgroundColor: Colors.white,
 
       //App bar
       appBar: AppBar(
@@ -62,7 +54,7 @@ class _DateRangePickerState extends State<DateRangePicker> {
         ),
         centerTitle: true,
       ),
-      
+
       //Tijelo
       body: SfDateRangePicker(
         view: DateRangePickerView.month,
@@ -70,15 +62,15 @@ class _DateRangePickerState extends State<DateRangePicker> {
         selectionMode: DateRangePickerSelectionMode.range,
         showActionButtons: true,
         controller: _dateRangePickerController,
-        onSubmit: (Object val){
+        /* onSubmit: (Object val){
           print(val);
-        },
-        onCancel: (){
-          _dateRangePickerController.selectedRanges=null;
+        }, */
+        onCancel: () {
+          _dateRangePickerController.selectedRanges = null;
         },
       ),
 
-       bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.qr_code_scanner_rounded),
@@ -94,11 +86,6 @@ class _DateRangePickerState extends State<DateRangePicker> {
               backgroundColor: Colors.black),
         ],
       ),
-      )
-     
-    );
+    ));
   }
-
- 
 }
-

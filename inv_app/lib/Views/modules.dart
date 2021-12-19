@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inv_app/Views/pocetna_stranica.dart';
+import 'package:inv_app/Views/general.dart';
 
 class Modules extends StatefulWidget {
   const Modules({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class _ModulesState extends State<Modules> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const HomepageWidget()));
+                      builder: (context) => GeneralStatefulWidget()));
             },
             child: const Text(
               'Enter',

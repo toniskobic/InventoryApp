@@ -8,7 +8,13 @@ import 'package:inv_app/Assets/constants.dart';
 import 'package:inv_app/Classes/resource.dart';
 import 'package:inv_app/Classes/user.dart';
 
-Future getResources() async {
+List<Resource> parseResource(String responseBody) {
+  final list = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return list.map<Resource>((json) => Resource.fromJson(json)).toList();
+}
+
+Future<List<Resource>> getResources() async {
   final token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTYzODQ4MDQ4MSwiZXhwIjoxNjQxMDcyNDgxfQ.leG2k2g--UoImag3NI3f0Be4Qnb6GzOFkxKHLWQ5AzE';
   final response = await http.get(
@@ -20,21 +26,8 @@ Future getResources() async {
     },
   );
 
-  final responseJson = jsonDecode(response.body);
-  Future<List<Resource>> ReadJsonData() async {
-    final list = responseJson as List<dynamic>;
-
-    print(list[1]);
-    //map json and initialize using DataModel
-    return list.map((e) => Resource.fromJson(e)).toList();
-  }
-
-  ReadJsonData();
-
-  /* if (response.statusCode == 200) {
-    return Resource.fromJson(responseJson);
-  } else {
-    final errorMessage = responseJson['message'][0]['messages'][0]['message'];
-    return throw Exception(errorMessage);
-  } */
+  if (response.statusCode == 200)
+    return parseResource(response.body);
+  else
+    return [];
 }
