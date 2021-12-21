@@ -1,41 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/resource.dart';
+import 'package:inv_app/Widgets/search_widget.dart';
 import 'package:inv_app/api/resourceService.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
-
   @override
   _HomepageState createState() => _HomepageState();
-}
-
-class ResourceList extends StatelessWidget {
-  const ResourceList({Key? key, required this.resource}) : super(key: key);
-
-  final List<Resource> resource;
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemCount: resource.length,
-      itemBuilder: (context, index) {
-        return Text('resource[index].name');
-      },
-    );
-  }
 }
 
 class _HomepageState extends State<Homepage> {
   List<Resource> resursi = [];
   bool isLoading = false;
+  String searchText = '';
+
+  late List<Resource> resourceSearch = resursi;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getResources()
         .then((response) => {
@@ -53,12 +36,63 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: PreferredSize(
+                preferredSize: Size.fromHeight(50.0),
+                child: AppBar(
+                    backgroundColor: Colors.white,
+                    bottom: TabBar(labelColor: Colors.black, tabs: [
+                      Text(
+                        'Repository',
+                        style: tabBarStyle(),
+                      ),
+                      Text(
+                        'Borrowed',
+                        style: tabBarStyle(),
+                      )
+                    ]))),
+            body: TabBarView(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      buildSearch(),
+                      SizedBox(height: 10, width: 50),
+                      new SizedBox(
+                          height: 20.0,
+                          width: 20.0,
+                          child: new IconButton(
+                            onPressed: () {},
+                            iconSize: 20.0,
+                            icon: Icon(Icons.filter_alt),
+                            alignment: Alignment.bottomLeft,
+                          )),
+                      SizedBox(height: 10),
+                      Expanded(child: resursiListView())
+                    ],
+                  ),
+                ),
+                Text('Borrowed')
+              ],
+            )));
+  }
+
   Widget resursiListView() {
-    if (resursi.contains(null) || resursi.length < 0 || isLoading) {
+    if (resursi.length < 0) {
       return Center(
-          child: CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-      ));
+        child: SizedBox(
+            width: 40.0,
+            height: 40.0,
+            child: const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue))),
+      );
     }
     return ListView.builder(
         itemCount: resursi.length,
@@ -74,67 +108,20 @@ class _HomepageState extends State<Homepage> {
             ));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    //return Scaffold(body: resursiListView());
+  Widget buildSearch() => SearchWidget(
+      text: searchText, hintText: 'Resource name', onChanged: searchResource);
 
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Text(
-              'Repository',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  color: Color.fromRGBO(50, 63, 75, 1),
-                  fontFamily: 'Mulish',
-                  fontSize: 16,
-                  letterSpacing: 0,
-                  fontWeight: FontWeight.normal,
-                  height: 1.5),
-            ),
-            SizedBox(height: 10),
+  void searchResource(String searchText) {
+    final resourcesFound = resourceSearch.where((resurs) {
+      final title = resurs.name!.toLowerCase();
+      final search = searchText.toLowerCase();
 
-            Text(
-              'Borrowed',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                  color: Color.fromRGBO(123, 135, 148, 1),
-                  fontFamily: 'Mulish',
-                  fontSize: 16,
-                  letterSpacing: 0,
-                  fontWeight: FontWeight.normal,
-                  height: 1.5),
-            ),
-            SizedBox(height: 30),
-            //sad ide search
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, size: 18),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                hintText: 'Search',
-              ),
-            ),
-            SizedBox(height: 10, width: 50),
-            new SizedBox(
-                height: 20.0,
-                width: 20.0,
-                child: new IconButton(
-                  onPressed: () {},
-                  iconSize: 20.0,
-                  icon: Icon(Icons.filter_alt),
-                  alignment: Alignment.bottomLeft,
-                )),
-            SizedBox(height: 10),
-            Expanded(child: resursiListView())
-          ],
-        ),
-      ),
-    );
+      return title.contains(search);
+    }).toList();
+
+    setState(() {
+      this.searchText = searchText;
+      this.resursi = resourcesFound;
+    });
   }
 }

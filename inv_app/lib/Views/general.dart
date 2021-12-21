@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
 
 class GeneralStatefulWidget extends StatefulWidget {
@@ -11,18 +12,16 @@ class GeneralStatefulWidget extends StatefulWidget {
 class HomeScreenState extends State<GeneralStatefulWidget> {
   int _selectedIndex = 1;
   PageController pageController = new PageController();
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 1: QR code scanner',
-      style: optionStyle,
+      style: navBarStyle(),
     ),
     Homepage(),
     Text(
       'Index 2: My profile',
-      style: optionStyle,
+      style: navBarStyle(),
     ),
   ];
 
@@ -41,7 +40,11 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Inventory App'), centerTitle: true),
+        appBar: AppBar(
+            title: Text('Inventory App'),
+            centerTitle: true,
+            backgroundColor: Colors.white70,
+            foregroundColor: Colors.black),
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
