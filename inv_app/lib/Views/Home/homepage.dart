@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/resource.dart';
+import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Widgets/search_widget.dart';
 import 'package:inv_app/api/resourceService.dart';
 
@@ -86,26 +87,25 @@ class _HomepageState extends State<Homepage> {
 
   Widget resursiListView() {
     if (resursi.length < 0) {
-      return Center(
-        child: SizedBox(
-            width: 40.0,
-            height: 40.0,
-            child: const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue))),
-      );
+      return circularWaiting();
     }
     return ListView.builder(
         itemCount: resursi.length,
         itemBuilder: (context, index) => Card(
-              child: ListTile(
-                  leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          "https://www.mytrendyphone.eu/images/Foldable-Drone-Pro-2-with-HD-Dual-Camera-E99-1800mAh-up-to-20min-18062021-01-p.jpg")),
-                  title: Text("${resursi[index].name}"),
-                  subtitle: Text("Remaining: ${resursi[index].quantity}"),
-                  trailing: Icon(Icons.navigate_next),
-                  onTap: () => print("Dohvati $index. resurs")),
-            ));
+            child: ListTile(
+                leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://www.mytrendyphone.eu/images/Foldable-Drone-Pro-2-with-HD-Dual-Camera-E99-1800mAh-up-to-20min-18062021-01-p.jpg")),
+                title: Text("${resursi[index].name}"),
+                subtitle: Text("Remaining: ${resursi[index].quantity}"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              ResourceDetails(id: resursi[index].id)));
+                })));
   }
 
   Widget buildSearch() => SearchWidget(

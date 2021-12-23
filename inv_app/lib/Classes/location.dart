@@ -1,19 +1,18 @@
 class Location {
   int? id;
   String? name;
-  String? description;
-  int? quantity;
+  String? coordinates;
 
   Location({
+    this.id,
     this.name,
-    this.description,
-    this.quantity,
+    this.coordinates,
   });
 
   factory Location.fromJson(Map<String, dynamic> parsedJson) {
     return Location(
+        id: parsedJson['id'],
         name: parsedJson['name'],
-        description: parsedJson['description'],
-        quantity: parsedJson['quantity']);
+        coordinates: parsedJson['coordinates']);
   }
 }

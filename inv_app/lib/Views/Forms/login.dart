@@ -81,7 +81,7 @@ class LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
               onSaved: (val) => user.password = val,
-              obscureText: !passwordHidden,
+              obscureText: passwordHidden,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: '********',
