@@ -5,5 +5,8 @@ module.exports = ({ env }) => ({
     auth: {
       secret: env('ADMIN_JWT_SECRET', '***REMOVED***'),
     },
+    watchIgnoreFiles: [
+      '**/AIR2108/qr.svg**',
+    ]
   },
 });
