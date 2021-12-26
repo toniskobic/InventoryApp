@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
+import 'package:inv_app/Views/change_password.dart';
+import 'package:inv_app/Views/edit_profile.dart';
 import 'package:inv_app/Views/modules.dart';
+import 'package:inv_app/Views/notifications.dart';
 import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
+
+import 'Forms/login.dart';
 
 class HomeForm extends StatefulWidget {
   const HomeForm({Key? key}) : super(key: key);
@@ -36,7 +41,10 @@ class HomeFormState extends State<HomeForm> {
                     borderRadius: BorderRadius.circular(20)),
                 child: ElevatedButton(
                   onPressed: () {
-                   // _logIn();
+                   Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const EditProfile()));
                    
                   },
                   child: const Text(
@@ -60,7 +68,10 @@ class HomeFormState extends State<HomeForm> {
                     borderRadius: BorderRadius.circular(20)),
                 child: ElevatedButton(
                   onPressed: () {
-                   // _logIn();
+                  Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ChangePassword()));
                    
                   },
                   child: const Text(
@@ -84,7 +95,10 @@ class HomeFormState extends State<HomeForm> {
                     borderRadius: BorderRadius.circular(20)),
                 child: ElevatedButton(
                   onPressed: () {
-                   // _logIn();
+                   Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Notifications()));
                    
                   },
                   child: const Text(
@@ -107,14 +121,18 @@ class HomeFormState extends State<HomeForm> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20)),
                 child: ElevatedButton(
-                  onPressed: () {
-                   // _logIn();
-                   
-                  },
+                  onPressed: () { 
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login()));
+                          },
                   child: const Text(
                     'LOG OUT',
                     style: TextStyle(color: Colors.white, fontSize: 18),
+                   
                   ),
+                  
                 ),
               ),
             ),
@@ -163,10 +181,9 @@ class _ProfileState extends State<ProfileDetails> {
                   
             ),
               
-
+          const HomeForm(),
             //LogIn Obrazac
-            const HomeForm(),
-
+           
             const SizedBox(
               height: 40,
             ),
