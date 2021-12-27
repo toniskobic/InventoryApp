@@ -6,7 +6,7 @@ module.exports = ({ env }) => ({
       secret: env('ADMIN_JWT_SECRET', '***REMOVED***'),
     },
     watchIgnoreFiles: [
-      '**/AIR2108/qr.svg**',
+      '**/invApp-strapi/qr.svg**',
     ]
   },
 });
