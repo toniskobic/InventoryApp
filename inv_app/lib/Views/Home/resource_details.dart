@@ -400,18 +400,28 @@ class _ResourceDetailsState extends State<ResourceDetails> {
   }
 
   Widget resourceDetails(details) {
-    // ERROR
-    /* details.forEach((key, value) {
-      print("$key => $value");
-    }); */
-    return Text('nesto');
-    /* for (var detail in details) {
-      for (var value in detail) {
-       return Text(value.toString());}
-       
+    if (details.length != 0) {
+      List<dynamic> detailsList = [];
+
+      for (var detail in details) {
+        var kljuc = detail.keys.elementAt(2);
+
+        var temp = '$kljuc: ${detail[kljuc]}';
+        detailsList.add(temp);
+        /* for (final mapEntry in detail.entries) {
+          key = mapEntry.key;
+          value = mapEntry.value;
+        } */
       }
+      if (detailsList.length != 0) {
+        return new Column(
+            children:
+                detailsList.map((item) => new Text(item.toString())).toList());
+      } else {
+        return Text('');
+      }
+    } else {
+      return Text('');
     }
-    return Text('No details');
-  } */
   }
 }

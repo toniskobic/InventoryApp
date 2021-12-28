@@ -32,7 +32,7 @@ class Resource {
       location:
           data['location'] != null ? Location.fromJson(data['location']) : null,
       tags: List<Tag>.from(data['tags'].map((tag) => Tag.fromJson(tag))),
-      details: data['Details'],
+      details: data['Details'] != null ? data['Details'] : null,
     );
   }
 }
