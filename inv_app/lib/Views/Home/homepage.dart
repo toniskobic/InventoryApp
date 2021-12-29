@@ -40,49 +40,72 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            appBar: PreferredSize(
-                preferredSize: Size.fromHeight(50.0),
-                child: AppBar(
-                    backgroundColor: Colors.white,
-                    bottom: TabBar(labelColor: Colors.black, tabs: [
-                      Text(
-                        'Repository',
-                        style: tabBarStyle(),
-                      ),
-                      Text(
-                        'Borrowed',
-                        style: tabBarStyle(),
-                      )
-                    ]))),
-            body: TabBarView(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      buildSearch(),
-                      SizedBox(height: 10, width: 50),
-                      new SizedBox(
-                          height: 20.0,
-                          width: 20.0,
-                          child: new IconButton(
-                            onPressed: () {},
-                            iconSize: 20.0,
-                            icon: Icon(Icons.filter_alt),
-                            alignment: Alignment.bottomLeft,
-                          )),
-                      SizedBox(height: 10),
-                      Expanded(child: resursiListView())
-                    ],
+      length: 2,
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50.0),
+            child: AppBar(
+                backgroundColor: Colors.white,
+                bottom: TabBar(labelColor: Colors.black, tabs: [
+                  Text(
+                    'Repository',
+                    style: tabBarStyle(),
                   ),
-                ),
-                Text('Borrowed')
-              ],
-            )));
+                  Text(
+                    'Borrowed',
+                    style: tabBarStyle(),
+                  )
+                ]))),
+        body: TabBarView(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  buildSearch(),
+                  SizedBox(height: 10, width: 50),
+                  new SizedBox(
+                      height: 20.0,
+                      width: 20.0,
+                      child: new IconButton(
+                        onPressed: () {},
+                        iconSize: 20.0,
+                        icon: Icon(Icons.filter_alt),
+                        alignment: Alignment.bottomLeft,
+                      )),
+                  SizedBox(height: 10),
+                  Expanded(child: resursiListView())
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  buildSearch(),
+                  SizedBox(height: 10, width: 50),
+                  new SizedBox(
+                      height: 20.0,
+                      width: 20.0,
+                      child: new IconButton(
+                        onPressed: () {},
+                        iconSize: 20.0,
+                        icon: Icon(Icons.filter_alt),
+                        alignment: Alignment.bottomLeft,
+                      )),
+                  SizedBox(height: 10),
+                  Expanded(child: resursiBorrowedListView())
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget resursiListView() {
@@ -106,6 +129,33 @@ class _HomepageState extends State<Homepage> {
                           builder: (_) =>
                               ResourceDetails(id: resursi[index].id)));
                 })));
+  }
+
+  Widget resursiBorrowedListView() {
+    return FutureBuilder<List<Resource?>>(
+        future: borrowedResources(),
+        builder: (context, snapshot) {
+          return snapshot.connectionState == ConnectionState.waiting
+              ? circularWaiting()
+              : ListView.builder(
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, index) => Card(
+                      child: ListTile(
+                          leading: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  "https://helloworld.raspberrypi.org/assets/raspberry_pi_full-3b24e4193f6faf616a01c25cb915fca66883ca0cd24a3d4601c7f1092772e6bd.png")),
+                          title: Text("${resursi[index].name}"),
+                          subtitle:
+                              Text("Remaining: ${resursi[index].quantity}"),
+                          trailing: Icon(Icons.navigate_next),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => ResourceDetails(
+                                        id: resursi[index].id)));
+                          })));
+        });
   }
 
   Widget buildSearch() => SearchWidget(

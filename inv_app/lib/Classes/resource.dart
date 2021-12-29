@@ -6,7 +6,7 @@ class Resource {
   String? name;
   String? description;
   int? quantity;
-  String? status;
+  bool? status;
   Location? location;
   List<Tag>? tags;
   List<dynamic>? details;
@@ -31,7 +31,9 @@ class Resource {
       //nedostajala je lokacija i odmah crklo
       location:
           data['location'] != null ? Location.fromJson(data['location']) : null,
-      tags: List<Tag>.from(data['tags'].map((tag) => Tag.fromJson(tag))),
+      tags: data['tags'] != null
+          ? List<Tag>.from(data['tags'].map((tag) => Tag.fromJson(tag)))
+          : null,
       details: data['Details'] != null ? data['Details'] : null,
     );
   }
