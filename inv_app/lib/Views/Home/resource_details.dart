@@ -105,13 +105,19 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                             height: 20,
                           ),
                           //Slika resursa
-                          const Padding(
-                            padding: EdgeInsets.only(top: 0.0, bottom: 20),
-                            child: Center(
+                          Padding(
+                              padding: EdgeInsets.only(top: 0.0, bottom: 20),
+                              child: Center(
                                 child: Image(
-                                    image: AssetImage(
-                                        'asset/images/resource_pic.png'))),
-                          ),
+                                  image: NetworkImage(snapshot.data?.picture
+                                              ?.formats?.thumbnail?.url !=
+                                          null
+                                      ? snapshot.data!.picture!.formats!
+                                          .thumbnail!.url
+                                          .toString()
+                                      : "https://helloworld.raspberrypi.org/assets/raspberry_pi_full-3b24e4193f6faf616a01c25cb915fca66883ca0cd24a3d4601c7f1092772e6bd.png"),
+                                ),
+                              )),
                           const SizedBox(
                             height: 20,
                           ),

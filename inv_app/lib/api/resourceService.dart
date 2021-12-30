@@ -33,18 +33,6 @@ Future<List<Resource>> getResources() async {
     return [];
 }
 
-Future<List<Resource>> RESOURCESiBorrowedList() async {
-  final response = await http.get(
-    Uri.parse(RESOURCES),
-    headers: header,
-  );
-
-  if (response.statusCode == 200)
-    return parseResource(response.body);
-  else
-    return [];
-}
-
 Future<Resource> getResourceById(int id) async {
   final response = await http.get(
     Uri.parse(RESOURCES + "/$id"),

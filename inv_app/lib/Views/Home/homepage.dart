@@ -13,7 +13,6 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   List<Resource> resursi = [];
-  bool isLoading = false;
   String searchText = '';
 
   late List<Resource> resourceSearch = resursi;
@@ -117,8 +116,12 @@ class _HomepageState extends State<Homepage> {
         itemBuilder: (context, index) => Card(
             child: ListTile(
                 leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://www.mytrendyphone.eu/images/Foldable-Drone-Pro-2-with-HD-Dual-Camera-E99-1800mAh-up-to-20min-18062021-01-p.jpg")),
+                    backgroundImage: NetworkImage(resursi[index]
+                        .picture!
+                        .formats!
+                        .thumbnail!
+                        .url
+                        .toString())),
                 title: Text("${resursi[index].name}"),
                 subtitle: Text("Remaining: ${resursi[index].quantity}"),
                 trailing: Icon(Icons.navigate_next),
@@ -135,15 +138,30 @@ class _HomepageState extends State<Homepage> {
     return FutureBuilder<List<Resource?>>(
         future: borrowedResources(),
         builder: (context, snapshot) {
-          return snapshot.connectionState == ConnectionState.waiting
-              ? circularWaiting()
-              : ListView.builder(
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            circularWaiting();
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data != null && snapshot.data!.length > 0) {
+              print(resursi[1].picture?.formats?.medium?.url);
+              return ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) => Card(
                       child: ListTile(
                           leading: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "https://helloworld.raspberrypi.org/assets/raspberry_pi_full-3b24e4193f6faf616a01c25cb915fca66883ca0cd24a3d4601c7f1092772e6bd.png")),
+                            backgroundImage: NetworkImage(resursi[index]
+                                        .picture
+                                        ?.formats
+                                        ?.thumbnail
+                                        ?.url !=
+                                    null
+                                ? resursi[index]
+                                    .picture!
+                                    .formats!
+                                    .thumbnail!
+                                    .url
+                                    .toString()
+                                : "https://helloworld.raspberrypi.org/assets/raspberry_pi_full-3b24e4193f6faf616a01c25cb915fca66883ca0cd24a3d4601c7f1092772e6bd.png"),
+                          ),
                           title: Text("${resursi[index].name}"),
                           subtitle:
                               Text("Remaining: ${resursi[index].quantity}"),
@@ -155,6 +173,14 @@ class _HomepageState extends State<Homepage> {
                                     builder: (_) => ResourceDetails(
                                         id: resursi[index].id)));
                           })));
+            } else
+              return Text("You didn't borrow anything yet.");
+          } else {
+            Get.snackbar('Oops', "Something's wrong with a server, try again.",
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.red[400]);
+          }
+          return const SizedBox();
         });
   }
 
