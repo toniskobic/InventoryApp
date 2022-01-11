@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
 import 'package:inv_app/Classes/resource.dart';
+import 'package:inv_app/Views/Home/homepage.dart';
+import 'package:flutter/material.dart';
 
 final token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQwMjE2OTI0LCJleHAiOjE2NDI4MDg5MjR9.xexQyfhjAYHQ93QVcR1Vw6rTbWownIH9LYs87hCeEmY';
@@ -61,14 +63,32 @@ Future<List<Resource?>> borrowedResources() async {
 }
 
 //posuđivanje resursa
-Future<String> borrowResource() async {
-  final response = await http.post(Uri.parse(BORROWED), headers: header, body: {
-    "dateFrom": "2021-12-03",
-    "dateTo": "2021-12-09",
-    "status": true,
-    "resource": "6",
-    "user": "1"
-  });
+Future<String> borrowResource(BuildContext context, String dateFrom,
+    String dateTo, int resourceId, int userId, quantity) async {
+  final response = await http.post(Uri.parse(BORROWED),
+      headers: header,
+      body: jsonEncode({
+        "dateFrom": dateFrom,
+        "dateTo": dateTo,
+        "status": true,
+        "resource": resourceId,
+        "user": userId,
+        "Quantity": quantity
+      }));
 
+  /*
+  if (response.statusCode == 200) {
+    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Homepage()));
+  }*/
+  print(dateFrom);
+  print(dateTo);
+  print(resourceId);
+  print(userId);
+  print(quantity);
+  print(response.statusCode);
+  print(response.body);
   return response.body;
 }

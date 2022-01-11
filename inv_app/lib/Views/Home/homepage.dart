@@ -129,8 +129,9 @@ class _HomepageState extends State<Homepage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) =>
-                              ResourceDetails(id: resursi[index].id)));
+                          builder: (_) => ResourceDetails(
+                              id: resursi[index].id,
+                              name: resursi[index].name!)));
                 })));
   }
 
@@ -171,7 +172,8 @@ class _HomepageState extends State<Homepage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => ResourceDetails(
-                                        id: resursi[index].id)));
+                                        id: resursi[index].id,
+                                        name: resursi[index].name!)));
                           })));
             } else
               return Text("You didn't borrow anything yet.");
