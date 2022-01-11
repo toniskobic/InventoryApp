@@ -5,7 +5,7 @@ TextStyle navBarStyle() {
 }
 
 TextStyle resourceDetailsStyle() {
-  return TextStyle(color: Colors.black, fontSize: 20);
+  return TextStyle(fontFamily: 'Mulish', color: Colors.black, fontSize: 20);
 }
 
 TextStyle tabBarStyle() {
@@ -14,7 +14,15 @@ TextStyle tabBarStyle() {
     fontSize: 16,
     letterSpacing: 0.8,
     fontWeight: FontWeight.w600,
-    height: 3,
+  );
+}
+
+TextStyle filterStyle() {
+  return TextStyle(
+    fontFamily: 'OpenSans',
+    fontSize: 20,
+    letterSpacing: 1.2,
+    fontWeight: FontWeight.w600,
   );
 }
 
@@ -33,4 +41,9 @@ Widget circularWaiting() {
         child: const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue))),
   );
+}
+
+Divider divider() {
+  return Divider(
+      thickness: 1, indent: 10, endIndent: 10, color: Colors.black12);
 }

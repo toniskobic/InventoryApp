@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/resource.dart';
 import 'package:inv_app/Views/Home/resource_details.dart';
+import 'package:inv_app/Views/filter.dart';
 import 'package:inv_app/Widgets/search_widget.dart';
 import 'package:inv_app/api/resourceService.dart';
 
@@ -57,28 +58,24 @@ class _HomepageState extends State<Homepage> {
                 ]))),
         body: TabBarView(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  buildSearch(),
-                  SizedBox(height: 10, width: 50),
-                  new SizedBox(
-                      height: 20.0,
-                      width: 20.0,
-                      child: new IconButton(
-                        onPressed: () {},
-                        iconSize: 20.0,
-                        icon: Icon(Icons.filter_alt),
-                        alignment: Alignment.bottomLeft,
-                      )),
-                  SizedBox(height: 10),
-                  Expanded(child: resursiListView())
-                ],
-              ),
-            ),
+            Column(children: [
+              Row(children: [
+                buildSearch(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => FilterWidget()));
+                  },
+                  iconSize: 20.0,
+                  icon: Icon(Icons.filter_alt),
+                  alignment: Alignment.bottomLeft,
+                ),
+                //SizedBox(height: 10),
+                //
+              ]),
+              Expanded(child: resursiListView()),
+            ]),
+            /* Borrowed */
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
               child: Column(
