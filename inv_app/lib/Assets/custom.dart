@@ -10,27 +10,36 @@ TextStyle resourceDetailsStyle() {
 
 TextStyle tabBarStyle() {
   return TextStyle(
-    fontFamily: 'Mulish',
     fontSize: 16,
-    letterSpacing: 0.8,
+    letterSpacing: 1,
     fontWeight: FontWeight.w600,
   );
 }
 
 TextStyle filterStyle() {
   return TextStyle(
-    fontFamily: 'OpenSans',
-    fontSize: 20,
-    letterSpacing: 1.2,
+    fontSize: 17,
+    letterSpacing: 1,
     fontWeight: FontWeight.w600,
   );
 }
 
 ButtonStyle resourceButton() {
   return ElevatedButton.styleFrom(
-      primary: Colors.lightBlue,
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-      textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+    primary: Colors.blue[600],
+    padding: EdgeInsets.symmetric(horizontal: 150, vertical: 18),
+    textStyle: TextStyle(fontSize: 20, letterSpacing: 1),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+  );
+}
+
+ButtonStyle filterButon() {
+  return ElevatedButton.styleFrom(
+    primary: Color(0xFF2f80ed),
+    padding: EdgeInsets.symmetric(horizontal: 150, vertical: 18),
+    textStyle: const TextStyle(fontSize: 20, letterSpacing: 1),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+  );
 }
 
 Widget circularWaiting() {
