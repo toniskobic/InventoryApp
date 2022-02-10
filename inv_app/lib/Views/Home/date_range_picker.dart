@@ -74,15 +74,15 @@ class _DateRangePickerState extends State<DateRangePicker> {
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.qr_code_scanner_rounded),
-              title: Text('QR code scanner'),
+              label: 'QR code scanner',
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),
-              title: Text('Home'),
+              label: 'Home',
               backgroundColor: Colors.blue),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text('My profile'),
+              label: 'My profile',
               backgroundColor: Colors.black),
         ],
       ),

@@ -52,11 +52,11 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.qr_code_scanner_rounded),
-                title: Text('QR code scanner')),
+                label: 'QR code scanner'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled), title: Text('Home')),
+                icon: Icon(Icons.home_filled), label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text('My profile')),
+                icon: Icon(Icons.person), label: 'My profile'),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.blue[800],
