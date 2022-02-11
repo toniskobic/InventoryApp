@@ -8,7 +8,7 @@ import 'package:inv_app/Assets/constants.dart';
 import 'package:inv_app/Classes/resource.dart';
 
 final token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQwMjE2OTI0LCJleHAiOjE2NDI4MDg5MjR9.xexQyfhjAYHQ93QVcR1Vw6rTbWownIH9LYs87hCeEmY';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImlhdCI6MTY0NDU5NDQ4OCwiZXhwIjoxNjQ3MTg2NDg4fQ.zFcK32mueZp7zYdjaCATqp6FtJ_MF_fxMsdSeyVbZFo';
 final header = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
