@@ -5,6 +5,7 @@ import 'package:inv_app/Classes/resource.dart';
 import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Widgets/search_widget.dart';
 import 'package:inv_app/api/resourceService.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -34,6 +35,44 @@ class _HomepageState extends State<Homepage> {
           duration: Duration(seconds: 2), backgroundColor: Colors.red[100]);
       print('$e');
     });
+    _checkNFC();
+    NfcManager.instance.startSession(
+      onDiscovered: (NfcTag tag) async {
+        // Do something with an NfcTag instance.
+        print('radi nfc');
+      },
+    );
+  }
+
+  _checkNFC() async {
+    bool isAvailable = await NfcManager.instance.isAvailable();
+    if (isAvailable) {
+      print('nfc dostupan');
+    } else {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Text(
+                        'NFC may not be supported or may be temporarily turned off.'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('GOT IT'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   @override
