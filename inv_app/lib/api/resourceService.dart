@@ -1,19 +1,43 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
 import 'package:inv_app/Classes/resource.dart';
-
-final token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQwMjE2OTI0LCJleHAiOjE2NDI4MDg5MjR9.xexQyfhjAYHQ93QVcR1Vw6rTbWownIH9LYs87hCeEmY';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:inv_app/Views/Forms/login.dart';
+import 'package:localstorage/localstorage.dart';
+import 'dart:typed_data';
+import 'package:hive/hive.dart';
+/*final token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQwMjE2OTI0LCJleHAiOjE2NDI4MDg5MjR9.xexQyfhjAYHQ93QVcR1Vw6rTbWownIH9LYs87hCeEmY';*/
 final header = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
-  'Authorization': 'Bearer $token'
+  //'Authorization': 'Bearer $token'
 };
+/*
+//spremanje tokena koristeci flutter_secure_storage
+final storage = new FlutterSecureStorage();
+await storage.write(key: 'jwt', value: token);*/
+
+//spremanje tokena koristeci hive
+void main() async {
+  var keyBox = await Hive.openBox('encryptionKeyBox');
+  if (!keyBox.containsKey('key')) {
+    var key = Hive.generateSecureKey();
+    keyBox.put('key', key);
+  }
+
+  var key = keyBox.get('key') as Uint8List;
+  print('Encryption key: $key');
+
+  var encryptedBox = await Hive.openBox('vaultBox', encryptionKey: key);
+  encryptedBox.put('secret', 'Hive');
+  print(encryptedBox.get('secret'));
+}
+
 
 List<Resource> parseResource(String responseBody) {
   final list = jsonDecode(responseBody).cast<Map<String, dynamic>>();
