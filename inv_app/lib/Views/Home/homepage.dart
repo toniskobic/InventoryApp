@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/resource.dart';
+import 'package:inv_app/Classes/resourceArguments.dart';
 import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Widgets/search_widget.dart';
 import 'package:inv_app/api/resourceService.dart';
@@ -38,17 +41,26 @@ class _HomepageState extends State<Homepage> {
     _checkNFC();
     NfcManager.instance.startSession(
       onDiscovered: (NfcTag tag) async {
-        // Do something with an NfcTag instance.
-        print('radi nfc');
+        Map tagData = tag.data;
+        Map tagNdef = tagData['ndef'];
+        Map cachedMessage = tagNdef['cachedMessage'];
+        Map records = cachedMessage['records'][0];
+        String payloadAsString = utf8.decode(records['payload']);
+        if (payloadAsString.contains('invapp://app/resources?id=')) {
+          int id = int.parse(payloadAsString.substring(27));
+          Navigator.pushNamed(
+            context,
+            ResourceDetails.routeName,
+            arguments: ResourceArguments(id),
+          );
+        }
       },
     );
   }
 
   _checkNFC() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
-    if (isAvailable) {
-      print('nfc dostupan');
-    } else {
+    if (!isAvailable) {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -165,11 +177,11 @@ class _HomepageState extends State<Homepage> {
                 subtitle: Text("Remaining: ${resursi[index].quantity}"),
                 trailing: Icon(Icons.navigate_next),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              ResourceDetails(id: resursi[index].id)));
+                  Navigator.pushNamed(
+                    context,
+                    ResourceDetails.routeName,
+                    arguments: ResourceArguments(resursi[index].id),
+                  );
                 })));
   }
 
@@ -206,11 +218,11 @@ class _HomepageState extends State<Homepage> {
                               Text("Remaining: ${resursi[index].quantity}"),
                           trailing: Icon(Icons.navigate_next),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => ResourceDetails(
-                                        id: resursi[index].id)));
+                            Navigator.pushNamed(
+                              context,
+                              ResourceDetails.routeName,
+                              arguments: ResourceArguments(resursi[index].id),
+                            );
                           })));
             } else
               return Text("You didn't borrow anything yet.");

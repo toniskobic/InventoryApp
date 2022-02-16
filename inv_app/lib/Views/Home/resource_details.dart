@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/resource.dart';
-import 'package:inv_app/Views/Forms/registration.dart';
-import 'package:inv_app/Views/modules.dart';
-import 'package:inv_app/api/loginService.dart';
-import 'package:inv_app/Classes/user.dart';
 import 'package:inv_app/api/resourceService.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ResourceDetailsForm extends StatefulWidget {
   @override
@@ -38,8 +32,10 @@ class ResourceDetailsFormState extends State<ResourceDetailsForm> {
 
 class ResourceDetails extends StatefulWidget {
   final int id;
-
   const ResourceDetails({Key? key, required this.id}) : super(key: key);
+
+  static const routeName = '/resources';
+
   @override
   _ResourceDetailsState createState() => _ResourceDetailsState();
 }

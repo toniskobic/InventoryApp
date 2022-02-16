@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inv_app/Views/general.dart';
 
 class Modules extends StatefulWidget {
   const Modules({Key? key}) : super(key: key);
@@ -23,10 +22,7 @@ class _ModulesState extends State<Modules> {
               color: Colors.blue, borderRadius: BorderRadius.circular(10)),
           child: TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GeneralStatefulWidget()));
+              Navigator.pushNamed(context, '/home');
             },
             child: const Text(
               'Enter',

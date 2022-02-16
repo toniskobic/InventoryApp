@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inv_app/Views/Forms/login.dart';
 import 'package:inv_app/api/registracijaService.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:get/get.dart';
@@ -237,10 +236,7 @@ class _RegistrationState extends State<Registration> {
                       child: ElevatedButton(
                           child: const Text("Login"),
                           onPressed: () {
-                            Navigator.pop(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Login()));
+                            Navigator.pop(context);
                           })
                       /* child: TextButton(
                   onPressed: () {
@@ -267,10 +263,7 @@ class _RegistrationState extends State<Registration> {
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Login()));
+                        Navigator.pushNamed(context, '/login');
                       },
                       child: const Text(
                         'Sign up with Google',
