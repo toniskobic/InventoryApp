@@ -22,7 +22,7 @@ class Registration extends StatefulWidget {
 class _RegistrationState extends State<Registration> {
   //Varijable
   final formKey = GlobalKey<FormState>();
-  bool passwordHidden = true;
+  bool passwordHidden = false;
 
   User user = User();
 
@@ -30,7 +30,8 @@ class _RegistrationState extends State<Registration> {
     final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
-      signUp(user).then((response) => {print(response)}).catchError((e) {
+      signUp(user).then((response) => {Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false)}).catchError((e) {
         Get.snackbar('Error', '$e',
             duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
         print('$e');
