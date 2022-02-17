@@ -14,9 +14,11 @@ Future signUp(User pUser) async {
     "password": pUser.password
   });
   final responseJson = jsonDecode(response.body);
-  final errorMessage = responseJson['message'][0]['messages'][0]['message'];
   if (response.statusCode == 200) {
     return User.fromJson(responseJson);
-  } else
-    return throw Exception(errorMessage);
+  } else{
+    final errorMessage = responseJson['message'][0]['messages'][0]['message'];
+     return throw Exception(errorMessage);
+  }
+   
 }
