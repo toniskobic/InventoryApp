@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:inv_app/Classes/resourceArguments.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Views/general.dart';
 import 'package:inv_app/Views/Forms/login.dart';
 import 'package:inv_app/Views/modules.dart';
+import 'package:inv_app/State/filterState.dart';
+import 'package:inv_app/Views/Home/homepage.dart';
+import 'package:inv_app/Views/filter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +45,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: GoogleFonts.openSans().fontFamily),
+      //home: GeneralStatefulWidget(),
       initialRoute: '/',
       routes: {
         '/home': (context) => GeneralStatefulWidget(),

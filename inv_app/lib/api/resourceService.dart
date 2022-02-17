@@ -3,7 +3,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
+import 'package:inv_app/Classes/borrowed.dart';
 import 'package:inv_app/Classes/resource.dart';
+import 'package:inv_app/Views/Home/homepage.dart';
+import 'package:flutter/material.dart';
 
 final token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImlhdCI6MTY0NDU5NDQ4OCwiZXhwIjoxNjQ3MTg2NDg4fQ.zFcK32mueZp7zYdjaCATqp6FtJ_MF_fxMsdSeyVbZFo';
@@ -17,6 +20,12 @@ List<Resource> parseResource(String responseBody) {
   final list = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
   return list.map<Resource>((json) => Resource.fromJson(json)).toList();
+}
+
+List<Borrowed> parseBorrowedResource(String responseBody) {
+  final list = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return list.map<Borrowed>((json) => Borrowed.fromJson(json)).toList();
 }
 
 Future<List<Resource>> getResources() async {
@@ -44,29 +53,88 @@ Future<Resource> getResourceById(int id) async {
     return Resource(id: 0);
 }
 
-Future<List<Resource?>> borrowedResources() async {
-  const userId = 1; // state.user.id
-  const organization = 1; // state.resoruce.organization
+Future<Borrowed> getBorrowedResourceById(int id) async {
+  final response = await http.get(
+    Uri.parse(BORROWED + "/$id"),
+    headers: header,
+  );
+
+  if (response.statusCode == 200) {
+    final resource = jsonDecode(response.body).cast<String, dynamic>();
+    return Borrowed.fromJson(resource);
+  } else
+    return Borrowed(id: 0);
+}
+
+Future<List<Borrowed?>> borrowedResources() async {
+  const userId = 41; // state.user.id
+  const organization = 2; // state.resoruce.organization
   final response = await http.get(
       Uri.parse(BORROWED +
           "?user.id=${userId}&resource.organization=${organization}"),
       headers: header);
 
   if (response.statusCode == 200)
-    return parseResource(response.body);
+    return parseBorrowedResource(response.body);
   else
     return [];
 }
 
 //posuđivanje resursa
-Future<String> borrowResource() async {
-  final response = await http.post(Uri.parse(BORROWED), headers: header, body: {
-    "dateFrom": "2021-12-03",
-    "dateTo": "2021-12-09",
-    "status": true,
-    "resource": "6",
-    "user": "1"
-  });
+Future<String> borrowResource(BuildContext context, String dateFrom,
+    String dateTo, int resourceId, int userId, quantity) async {
+  final response = await http.post(Uri.parse(BORROWED),
+      headers: header,
+      body: jsonEncode({
+        "dateFrom": dateFrom,
+        "dateTo": dateTo,
+        "status": true,
+        "resource": resourceId,
+        "user": userId,
+        "Quantity": quantity
+      }));
 
+  /*
+  if (response.statusCode == 200) {
+    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Homepage()));
+  }*/
+  print(dateFrom);
+  print(dateTo);
+  print(resourceId);
+  print(userId);
+  print(quantity);
+  print(response.statusCode);
+  print(response.body);
+  return response.body;
+}
+
+//vraćanje resursa
+Future<String> returnResource(
+    BuildContext context, int resourceId, int userId, comment) async {
+  final response = await http.post(Uri.parse(BORROWED),
+      headers: header,
+      body: jsonEncode({
+        "status": false,
+        "resource": resourceId,
+        "user": userId,
+        "Comment": comment
+      }));
+
+  /*
+  if (response.statusCode == 200) {
+    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Homepage()));
+  }*/
+
+  print(resourceId);
+  print(userId);
+  print(comment);
+  print(response.statusCode);
+  print(response.body);
   return response.body;
 }
