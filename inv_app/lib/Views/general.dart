@@ -1,9 +1,6 @@
-<<<<<<< Updated upstream
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-=======
 import 'dart:convert';
 
->>>>>>> Stashed changes
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/State/filterState.dart';

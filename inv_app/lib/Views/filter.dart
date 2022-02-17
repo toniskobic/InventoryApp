@@ -77,11 +77,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     children: [
                       /* SORT */
                       ExpansionPanel(
-<<<<<<< Updated upstream
-                        //hasIcon: false,
-=======
                         // hasIcon: false,
->>>>>>> Stashed changes
                         headerBuilder: (context, isExpanded) {
                           return ListTile(
                             title: Text('Sort', style: filterStyle()),
@@ -124,11 +120,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       ),
                       /* TAG */
                       ExpansionPanel(
-<<<<<<< Updated upstream
-                        //hasIcon: false,
-=======
                         // hasIcon: false,
->>>>>>> Stashed changes
                         headerBuilder: (context, isExpanded) {
                           return ListTile(
                             title: Text('Tag', style: filterStyle()),
