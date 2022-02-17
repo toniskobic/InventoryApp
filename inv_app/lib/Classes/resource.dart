@@ -32,6 +32,7 @@ class Resource {
         quantity: data['quantity'],
         status: data['status'],
         //nedostajala je lokacija i odmah crklo
+
         location: data['location'] != null
             ? Location.fromJson(data['location'])
             : null,

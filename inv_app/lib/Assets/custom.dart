@@ -27,7 +27,16 @@ TextStyle filterStyle() {
 ButtonStyle resourceButton() {
   return ElevatedButton.styleFrom(
     primary: Colors.blue[600],
-    padding: EdgeInsets.symmetric(horizontal: 150, vertical: 18),
+    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 18),
+    textStyle: TextStyle(fontSize: 20, letterSpacing: 1),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+  );
+}
+
+ButtonStyle greyButton() {
+  return ElevatedButton.styleFrom(
+    primary: Colors.grey[600],
+    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 18),
     textStyle: TextStyle(fontSize: 20, letterSpacing: 1),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
   );

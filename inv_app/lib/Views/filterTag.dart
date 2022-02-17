@@ -4,7 +4,7 @@ Widget myTagsChipUIWidget({
   tagModel,
   onTap,
   action,
-  selected,
+  selectedList,
 }) {
   return InkWell(
       onTap: onTap,
@@ -17,11 +17,13 @@ Widget myTagsChipUIWidget({
             ),
             child: Container(
               padding: EdgeInsets.symmetric(
-                horizontal: 10.0,
+                horizontal: 15.0,
                 vertical: 10.0,
               ),
               decoration: BoxDecoration(
-                color: selected ? Colors.green : Colors.blueAccent[100],
+                color: selectedList.contains(tagModel)
+                    ? Colors.green
+                    : Colors.blueAccent[100],
                 borderRadius: BorderRadius.circular(100.0),
               ),
               child: Text(
