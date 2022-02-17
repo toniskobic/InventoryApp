@@ -11,6 +11,7 @@ import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:inv_app/api/resourceService.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'dart:convert';
 
 class ResourceDetailsForm extends StatefulWidget {
   @override
@@ -40,8 +41,10 @@ class ResourceDetailsFormState extends State<ResourceDetailsForm> {
 
 class ResourceDetails extends StatefulWidget {
   final int id;
+  final String name;
 
-  const ResourceDetails({Key? key, required this.id}) : super(key: key);
+  const ResourceDetails({Key? key, required this.id, required this.name})
+      : super(key: key);
   @override
   _ResourceDetailsState createState() => _ResourceDetailsState();
 }
@@ -79,6 +82,24 @@ class _ResourceDetailsState extends State<ResourceDetails> {
     }
   }
 
+  //ispisuje datum from
+  String getFromB() {
+    if (dateRange == null) {
+      return 'Loan date ';
+    } else {
+      return DateFormat('yyyy-MM-dd').format(dateRange.start);
+    }
+  }
+
+//ispisuje datum until
+  String getUntilB() {
+    if (dateRange == null) {
+      return 'Expected return date';
+    } else {
+      return DateFormat('yyyy-MM-dd').format(dateRange.end);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //Dizajn
@@ -86,8 +107,8 @@ class _ResourceDetailsState extends State<ResourceDetails> {
         backgroundColor: Colors.white,
         //App bar
         appBar: AppBar(
-          title: const Text(
-            "Resource name",
+          title: Text(
+            widget.name,
             style: TextStyle(
                 color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
           ),
@@ -358,7 +379,40 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                               fit: BoxFit.fitWidth,
                               child: ElevatedButton(
                                 child: Text("BORROW"),
-                                onPressed: null,
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(widget.name),
+                                          content: SingleChildScrollView(
+                                            child: ListBody(
+                                              children: <Widget>[
+                                                Text(
+                                                    'Return date: ${getUntil()}'),
+                                                Text(
+                                                    'Available quantity: ${snapshot.data?.quantity}'),
+                                                BorrowForm(
+                                                    dateFrom: getFromB(),
+                                                    dateUntil: getUntilB(),
+                                                    resourceId: widget.id,
+                                                    userId: 41,
+                                                    availableQuantity: snapshot
+                                                        .data?.quantity),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
                                 style: resourceButton(),
                               ),
                             ),
@@ -443,5 +497,208 @@ class _ResourceDetailsState extends State<ResourceDetails> {
     } else {
       return Text('');
     }
+  }
+}
+
+//Posudba resursa
+
+class BorrowForm extends StatefulWidget {
+  final String dateFrom;
+  final String dateUntil;
+  final int resourceId;
+  final int userId;
+  final int? availableQuantity;
+
+  const BorrowForm(
+      {Key? key,
+      required this.dateFrom,
+      required this.dateUntil,
+      required this.resourceId,
+      required this.userId,
+      required this.availableQuantity})
+      : super(key: key);
+  @override
+  BorrowFormState createState() {
+    return BorrowFormState();
+  }
+}
+
+class BorrowFormState extends State<BorrowForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  int quantity = 0;
+  void _borrow() {
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      borrowResource(context, widget.dateFrom, widget.dateUntil,
+          widget.resourceId, widget.userId, quantity);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Text
+          const Padding(
+            padding:
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Quantity:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
+            ),
+          ),
+
+          //TextBox for quantity
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              onSaved: (val) => quantity = int.parse(val!),
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+              validator: (value) {
+                if (value == null || value.isEmpty || int.parse(value) < 0) {
+                  return 'Enter a valid quantity.';
+                } else if (widget.availableQuantity != null &&
+                    int.parse(value) > widget.availableQuantity!) {
+                  return "Check available quantity.";
+                } else if (widget.availableQuantity == null) {
+                  return 'There is no available item to borrow.';
+                }
+                return null;
+              },
+            ),
+          ),
+
+          //Borrow Button
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 15, bottom: 0),
+            child: Center(
+              child: Container(
+                height: 40,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _borrow();
+                  },
+                  child: const Text(
+                    'BOROWW',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//Vraćanje resursa
+
+class ReturnForm extends StatefulWidget {
+  final String dateFrom;
+  final String dateUntil;
+  final int resourceId;
+  final int userId;
+  final int? availableQuantity;
+
+  const ReturnForm(
+      {Key? key,
+      required this.dateFrom,
+      required this.dateUntil,
+      required this.resourceId,
+      required this.userId,
+      required this.availableQuantity})
+      : super(key: key);
+  @override
+  ReturnFormState createState() {
+    return ReturnFormState();
+  }
+}
+
+class ReturnFormState extends State<ReturnForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  String comment = "";
+  void _return() {
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      returnResource(context, widget.resourceId, widget.userId, comment);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Text
+          const Padding(
+            padding:
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Comment:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
+            ),
+          ),
+
+          //TextBox for commnet
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextFormField(
+              onSaved: (val) => comment = val!,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+              validator: (value) {
+                if (value!.length >= 20) {
+                  return 'Comment is too long.';
+                }
+                return null;
+              },
+            ),
+          ),
+
+          //Return Button
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 15, bottom: 0),
+            child: Center(
+              child: Container(
+                height: 40,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _return();
+                  },
+                  child: const Text(
+                    'RETURN',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

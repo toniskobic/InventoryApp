@@ -152,8 +152,9 @@ class _HomepageState extends State<Homepage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) =>
-                                  ResourceDetails(id: resursi[index].id)));
+                              builder: (_) => ResourceDetails(
+                                  id: resursi[index].id,
+                                  name: resursi[index].name!)));
                     }))
             : SizedBox.shrink());
   }
