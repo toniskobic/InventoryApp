@@ -5,24 +5,50 @@ TextStyle navBarStyle() {
 }
 
 TextStyle resourceDetailsStyle() {
-  return TextStyle(color: Colors.black, fontSize: 20);
+  return TextStyle(fontFamily: 'Mulish', color: Colors.black, fontSize: 20);
 }
 
 TextStyle tabBarStyle() {
   return TextStyle(
-    fontFamily: 'Mulish',
     fontSize: 16,
-    letterSpacing: 0.8,
+    letterSpacing: 1,
     fontWeight: FontWeight.w600,
-    height: 3,
+  );
+}
+
+TextStyle filterStyle() {
+  return TextStyle(
+    fontSize: 17,
+    letterSpacing: 1,
+    fontWeight: FontWeight.w600,
   );
 }
 
 ButtonStyle resourceButton() {
   return ElevatedButton.styleFrom(
-      primary: Colors.lightBlue,
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-      textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+    primary: Colors.blue[600],
+    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 18),
+    textStyle: TextStyle(fontSize: 20, letterSpacing: 1),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+  );
+}
+
+ButtonStyle greyButton() {
+  return ElevatedButton.styleFrom(
+    primary: Colors.grey[600],
+    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 18),
+    textStyle: TextStyle(fontSize: 20, letterSpacing: 1),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+  );
+}
+
+ButtonStyle filterButon() {
+  return ElevatedButton.styleFrom(
+    primary: Color(0xFF2f80ed),
+    padding: EdgeInsets.symmetric(horizontal: 150, vertical: 18),
+    textStyle: const TextStyle(fontSize: 20, letterSpacing: 1),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+  );
 }
 
 Widget circularWaiting() {
@@ -33,4 +59,9 @@ Widget circularWaiting() {
         child: const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue))),
   );
+}
+
+Divider divider() {
+  return Divider(
+      thickness: 1, indent: 10, endIndent: 10, color: Colors.black12);
 }

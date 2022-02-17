@@ -3,6 +3,7 @@ import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/modules.dart';
 import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
+import 'package:inv_app/Views/Forms/passwordReset.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -190,33 +191,8 @@ class _LoginState extends State<Login> {
                   left: 15.0, right: 15.0, top: 10, bottom: 0),
               child: TextButton(
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (_) {
-                        return AlertDialog(
-                          title: const Text('New password request'),
-                          content: const Text(
-                              'New password will be send to your email address. Are you sure you want to continue?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const Text('Continue'),
-                            ),
-                          ],
-                        );
-                      }).then((exit) {
-                    if (exit == null) return;
-
-                    if (exit) {
-                      // user pressed Continue button
-                    } else {
-                      // user pressed Cancel button
-                    }
-                  });
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PassReset()));
                 },
                 child: const Text(
                   'Forgot Password?',

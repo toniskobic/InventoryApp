@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
+import 'package:inv_app/Classes/borrowed.dart';
 import 'package:inv_app/Classes/resource.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,12 @@ List<Resource> parseResource(String responseBody) {
   final list = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
   return list.map<Resource>((json) => Resource.fromJson(json)).toList();
+}
+
+List<Borrowed> parseBorrowedResource(String responseBody) {
+  final list = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return list.map<Borrowed>((json) => Borrowed.fromJson(json)).toList();
 }
 
 Future<List<Resource>> getResources() async {
@@ -48,16 +55,29 @@ Future<Resource> getResourceById(int id) async {
     return Resource(id: 0);
 }
 
-Future<List<Resource?>> borrowedResources() async {
+Future<Borrowed> getBorrowedResourceById(int id) async {
+  final response = await http.get(
+    Uri.parse(BORROWED + "/$id"),
+    headers: header,
+  );
+
+  if (response.statusCode == 200) {
+    final resource = jsonDecode(response.body).cast<String, dynamic>();
+    return Borrowed.fromJson(resource);
+  } else
+    return Borrowed(id: 0);
+}
+
+Future<List<Borrowed?>> borrowedResources() async {
   const userId = 41; // state.user.id
-  const organization = 1; // state.resoruce.organization
+  const organization = 2; // state.resoruce.organization
   final response = await http.get(
       Uri.parse(BORROWED +
           "?user.id=${userId}&resource.organization=${organization}"),
       headers: header);
 
   if (response.statusCode == 200)
-    return parseResource(response.body);
+    return parseBorrowedResource(response.body);
   else
     return [];
 }

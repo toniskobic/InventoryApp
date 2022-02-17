@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inv_app/Assets/custom.dart';
+import 'package:inv_app/Classes/borrowed.dart';
 import 'package:inv_app/Classes/resource.dart';
 import 'package:inv_app/Classes/tag.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
@@ -11,16 +12,16 @@ import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:inv_app/api/resourceService.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'dart:convert';
 
-class ResourceDetailsForm extends StatefulWidget {
+class BorrowedResourceDetailsForm extends StatefulWidget {
   @override
-  ResourceDetailsFormState createState() {
-    return ResourceDetailsFormState();
+  BorrowedResourceDetailsFormState createState() {
+    return BorrowedResourceDetailsFormState();
   }
 }
 
-class ResourceDetailsFormState extends State<ResourceDetailsForm> {
+class BorrowedResourceDetailsFormState
+    extends State<BorrowedResourceDetailsForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -39,17 +40,19 @@ class ResourceDetailsFormState extends State<ResourceDetailsForm> {
   }
 }
 
-class ResourceDetails extends StatefulWidget {
+class BorrowedResourceDetails extends StatefulWidget {
   final int id;
-  final String name;
+  final String? name;
 
-  const ResourceDetails({Key? key, required this.id, required this.name})
+  const BorrowedResourceDetails(
+      {Key? key, required this.id, required this.name})
       : super(key: key);
   @override
-  _ResourceDetailsState createState() => _ResourceDetailsState();
+  _BorrowedResourceDetailsState createState() =>
+      _BorrowedResourceDetailsState();
 }
 
-class _ResourceDetailsState extends State<ResourceDetails> {
+class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
   DateTime date = DateTime.now();
   DateTimeRange dateRange = DateTimeRange(
       start: DateTime(DateTime.now().year - 5),
@@ -65,38 +68,20 @@ class _ResourceDetailsState extends State<ResourceDetails> {
   }
 
 //ispisuje datum from
-  String getFrom() {
-    if (dateRange == null) {
+  String getFrom(String? dateFrom) {
+    if (dateFrom == null) {
       return 'Loan date ';
     } else {
-      return DateFormat('dd/MM/yyyy').format(dateRange.start);
+      return DateFormat('dd/MM/yyyy').format(DateTime.parse(dateFrom));
     }
   }
 
 //ispisuje datum until
-  String getUntil() {
-    if (dateRange == null) {
+  String getUntil(String? dateTo) {
+    if (dateTo == null) {
       return 'Expected return date';
     } else {
-      return DateFormat('dd/MM/yyyy').format(dateRange.end);
-    }
-  }
-
-  //ispisuje datum from
-  String getFromB() {
-    if (dateRange == null) {
-      return 'Loan date ';
-    } else {
-      return DateFormat('yyyy-MM-dd').format(dateRange.start);
-    }
-  }
-
-//ispisuje datum until
-  String getUntilB() {
-    if (dateRange == null) {
-      return 'Expected return date';
-    } else {
-      return DateFormat('yyyy-MM-dd').format(dateRange.end);
+      return DateFormat('dd/MM/yyyy').format(DateTime.parse(dateTo));
     }
   }
 
@@ -108,7 +93,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
         //App bar
         appBar: AppBar(
           title: Text(
-            widget.name,
+            widget.name ?? "Unknown",
             style: TextStyle(
                 color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
           ),
@@ -117,8 +102,8 @@ class _ResourceDetailsState extends State<ResourceDetails> {
 
         //Tijelo
         body: SingleChildScrollView(
-          child: FutureBuilder<Resource?>(
-              future: getResourceById(widget.id),
+          child: FutureBuilder<Borrowed?>(
+              future: getBorrowedResourceById(widget.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return circularWaiting();
@@ -134,11 +119,11 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                           padding: EdgeInsets.only(top: 0.0, bottom: 20),
                           child: Center(
                             child: Image(
-                              image: NetworkImage(snapshot.data?.picture
-                                          ?.formats?.thumbnail?.url !=
+                              image: NetworkImage(snapshot.data?.resource
+                                          ?.picture?.formats?.thumbnail?.url !=
                                       null
-                                  ? snapshot
-                                      .data!.picture!.formats!.thumbnail!.url
+                                  ? snapshot.data!.resource!.picture!.formats!
+                                      .thumbnail!.url
                                       .toString()
                                   : "https://helloworld.raspberrypi.org/assets/raspberry_pi_full-3b24e4193f6faf616a01c25cb915fca66883ca0cd24a3d4601c7f1092772e6bd.png"),
                             ),
@@ -154,7 +139,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                              'Resource description: ${snapshot.data?.description == null ? "No description" : snapshot.data?.description}',
+                              'Resource description: ${snapshot.data?.resource?.description == null ? "No description" : snapshot.data!.resource!.description}',
                               textAlign: TextAlign.left,
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20)),
@@ -197,7 +182,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                           SizedBox(width: 5),
                           RaisedButton(
                             color: Colors.white,
-                            child: Text(getFrom()),
+                            child: Text(getFrom(snapshot.data?.dateFrom)),
                             onPressed: () => pickDateRange(context),
                           ),
                           Icon(Icons.arrow_right_alt_outlined,
@@ -205,7 +190,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                           SizedBox(width: 5),
                           RaisedButton(
                             color: Colors.white,
-                            child: Text(getUntil()),
+                            child: Text(getUntil(snapshot.data?.dateTo)),
                             onPressed: () => pickDateRange(context),
                           ),
                         ],
@@ -243,7 +228,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                             left: 15.0, right: 15.0, top: 0, bottom: 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Ouantity: ${snapshot.data?.quantity}',
+                          child: Text('Ouantity: ${snapshot.data?.Quantity}',
                               textAlign: TextAlign.left,
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20)),
@@ -257,32 +242,6 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                         endIndent: 20,
                       ),
 
-                      //Tag
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Text('Tags:',
-                                        style: resourceDetailsStyle()),
-                                    tagsWidget(snapshot.data?.tags),
-                                  ],
-                                ),
-                              ],
-                            )),
-                      ),
-                      Divider(
-                        height: 25,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-
                       //Status
                       Padding(
                         padding: EdgeInsets.only(
@@ -290,7 +249,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Status: ${snapshot.data?.status == null ? "No status" : snapshot.data?.status}',
+                              'Status: ${snapshot.data?.status == null ? "No status" : snapshot.data?.status == true ? "Borrowed" : "Available"}',
                               textAlign: TextAlign.left,
                               style: resourceDetailsStyle(),
                             )),
@@ -349,7 +308,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                                         style: resourceDetailsStyle()),
                                     Expanded(
                                         child: resourceDetails(
-                                            snapshot.data!.details))
+                                            snapshot.data!.resource!.details))
                                   ],
                                 ),
                               ],
@@ -371,7 +330,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                               fit: BoxFit.fitWidth,
                               child: ElevatedButton(
                                 child: Text("RETURN"),
-                                onPressed: null,
+                                onPressed: () {},
                                 style: resourceButton(),
                               ),
                             ),
@@ -379,41 +338,8 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                               fit: BoxFit.fitWidth,
                               child: ElevatedButton(
                                 child: Text("BORROW"),
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(widget.name),
-                                          content: SingleChildScrollView(
-                                            child: ListBody(
-                                              children: <Widget>[
-                                                Text(
-                                                    'Return date: ${getUntil()}'),
-                                                Text(
-                                                    'Available quantity: ${snapshot.data?.quantity}'),
-                                                BorrowForm(
-                                                    dateFrom: getFromB(),
-                                                    dateUntil: getUntilB(),
-                                                    resourceId: widget.id,
-                                                    userId: 41,
-                                                    availableQuantity: snapshot
-                                                        .data?.quantity),
-                                              ],
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: const Text('Cancel'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                },
-                                style: resourceButton(),
+                                onPressed: null,
+                                style: greyButton(),
                               ),
                             ),
                           ],
@@ -497,208 +423,5 @@ class _ResourceDetailsState extends State<ResourceDetails> {
     } else {
       return Text('');
     }
-  }
-}
-
-//Posudba resursa
-
-class BorrowForm extends StatefulWidget {
-  final String dateFrom;
-  final String dateUntil;
-  final int resourceId;
-  final int userId;
-  final int? availableQuantity;
-
-  const BorrowForm(
-      {Key? key,
-      required this.dateFrom,
-      required this.dateUntil,
-      required this.resourceId,
-      required this.userId,
-      required this.availableQuantity})
-      : super(key: key);
-  @override
-  BorrowFormState createState() {
-    return BorrowFormState();
-  }
-}
-
-class BorrowFormState extends State<BorrowForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  int quantity = 0;
-  void _borrow() {
-    final form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      borrowResource(context, widget.dateFrom, widget.dateUntil,
-          widget.resourceId, widget.userId, quantity);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //Text
-          const Padding(
-            padding:
-                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Quantity:',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black, fontSize: 15)),
-            ),
-          ),
-
-          //TextBox for quantity
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              onSaved: (val) => quantity = int.parse(val!),
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-              validator: (value) {
-                if (value == null || value.isEmpty || int.parse(value) < 0) {
-                  return 'Enter a valid quantity.';
-                } else if (widget.availableQuantity != null &&
-                    int.parse(value) > widget.availableQuantity!) {
-                  return "Check available quantity.";
-                } else if (widget.availableQuantity == null) {
-                  return 'There is no available item to borrow.';
-                }
-                return null;
-              },
-            ),
-          ),
-
-          //Borrow Button
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 15, bottom: 0),
-            child: Center(
-              child: Container(
-                height: 40,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _borrow();
-                  },
-                  child: const Text(
-                    'BOROWW',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-//Vraćanje resursa
-
-class ReturnForm extends StatefulWidget {
-  final String dateFrom;
-  final String dateUntil;
-  final int resourceId;
-  final int userId;
-  final int? availableQuantity;
-
-  const ReturnForm(
-      {Key? key,
-      required this.dateFrom,
-      required this.dateUntil,
-      required this.resourceId,
-      required this.userId,
-      required this.availableQuantity})
-      : super(key: key);
-  @override
-  ReturnFormState createState() {
-    return ReturnFormState();
-  }
-}
-
-class ReturnFormState extends State<ReturnForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  String comment = "";
-  void _return() {
-    final form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      returnResource(context, widget.resourceId, widget.userId, comment);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //Text
-          const Padding(
-            padding:
-                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Comment:',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black, fontSize: 15)),
-            ),
-          ),
-
-          //TextBox for commnet
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextFormField(
-              onSaved: (val) => comment = val!,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-              validator: (value) {
-                if (value!.length >= 20) {
-                  return 'Comment is too long.';
-                }
-                return null;
-              },
-            ),
-          ),
-
-          //Return Button
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 15, bottom: 0),
-            child: Center(
-              child: Container(
-                height: 40,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _return();
-                  },
-                  child: const Text(
-                    'RETURN',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
