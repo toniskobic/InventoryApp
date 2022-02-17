@@ -27,7 +27,7 @@ class _HomepageState extends State<Homepage> {
   String searchText = '';
 
   late List<Resource> resourceSearch = resursi;
-  late FilterState filterState;
+  late FilterState filterState = FilterState(null, []);
 
   @override
   void initState() {
@@ -40,7 +40,6 @@ class _HomepageState extends State<Homepage> {
         .then((response) => {
               if (mounted)
                 {
-                  print(response),
                   setState(() {
                     resursi = response;
                   })
@@ -52,7 +51,7 @@ class _HomepageState extends State<Homepage> {
       print('$e');
     });
     _checkNFC();
-    NfcManager.instance.startSession(
+    /* NfcManager.instance.startSession(
       onDiscovered: (NfcTag tag) async {
         Map tagData = tag.data;
         Map tagNdef = tagData['ndef'];
@@ -68,7 +67,7 @@ class _HomepageState extends State<Homepage> {
           );
         }
       },
-    );
+    ); */
   }
 
   _checkNFC() async {
@@ -135,10 +134,7 @@ class _HomepageState extends State<Homepage> {
                     final data = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => ListenableProvider(
-                          create: (_) => FilterState(Sort.nameAZ, []),
-                          builder: (context, child) => FilterWidget(),
-                        ),
+                        builder: (BuildContext context) => FilterWidget(),
                       ),
                     );
                     data != null

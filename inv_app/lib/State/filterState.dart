@@ -3,7 +3,7 @@ import 'package:inv_app/Classes/tag.dart';
 import 'package:inv_app/Views/filter.dart';
 
 class FilterState extends ChangeNotifier {
-  Sort? _sort = Sort.nameAZ;
+  Sort? _sort = null;
   Sort? get sort => _sort;
 
   List<Tag>? _selectedTagsList = [];
