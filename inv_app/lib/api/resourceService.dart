@@ -10,7 +10,7 @@ import 'package:inv_app/Views/Home/homepage.dart';
 import 'package:flutter/material.dart';
 
 final token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQwMjE2OTI0LCJleHAiOjE2NDI4MDg5MjR9.xexQyfhjAYHQ93QVcR1Vw6rTbWownIH9LYs87hCeEmY';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImlhdCI6MTY0NDU5NDQ4OCwiZXhwIjoxNjQ3MTg2NDg4fQ.zFcK32mueZp7zYdjaCATqp6FtJ_MF_fxMsdSeyVbZFo';
 final header = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
@@ -49,7 +49,7 @@ Future<Resource> getResourceById(int id) async {
 }
 
 Future<List<Resource?>> borrowedResources() async {
-  const userId = 1; // state.user.id
+  const userId = 41; // state.user.id
   const organization = 1; // state.resoruce.organization
   final response = await http.get(
       Uri.parse(BORROWED +
@@ -88,6 +88,34 @@ Future<String> borrowResource(BuildContext context, String dateFrom,
   print(resourceId);
   print(userId);
   print(quantity);
+  print(response.statusCode);
+  print(response.body);
+  return response.body;
+}
+
+//vraćanje resursa
+Future<String> returnResource(
+    BuildContext context, int resourceId, int userId, comment) async {
+  final response = await http.post(Uri.parse(BORROWED),
+      headers: header,
+      body: jsonEncode({
+        "status": false,
+        "resource": resourceId,
+        "user": userId,
+        "Comment": comment
+      }));
+
+  /*
+  if (response.statusCode == 200) {
+    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Homepage()));
+  }*/
+
+  print(resourceId);
+  print(userId);
+  print(comment);
   print(response.statusCode);
   print(response.body);
   return response.body;

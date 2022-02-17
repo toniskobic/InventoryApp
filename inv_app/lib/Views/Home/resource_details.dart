@@ -362,13 +362,49 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                             endIndent: 20,
                           ),
 
-                          Center(
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 15.0, right: 15.0, top: 0, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 ElevatedButton(
                                   child: Text("RETURN"),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(widget.name),
+                                            content: SingleChildScrollView(
+                                              child: ListBody(
+                                                children: <Widget>[
+                                                  Text(
+                                                      'Return date: ${getUntil()}'),
+                                                  Text(
+                                                      'Available quantity: ${snapshot.data?.quantity}'),
+                                                  ReturnForm(
+                                                      dateFrom: getFromB(),
+                                                      dateUntil: getUntilB(),
+                                                      resourceId: widget.id,
+                                                      userId: 41,
+                                                      availableQuantity:
+                                                          snapshot
+                                                              .data?.quantity),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
                                   style: resourceButton(),
                                 ),
                                 SizedBox(width: 5),
@@ -487,6 +523,8 @@ class _ResourceDetailsState extends State<ResourceDetails> {
   }
 }
 
+//Posudba resursa
+
 class BorrowForm extends StatefulWidget {
   final String dateFrom;
   final String dateUntil;
@@ -550,11 +588,11 @@ class BorrowFormState extends State<BorrowForm> {
               validator: (value) {
                 if (value == null || value.isEmpty || int.parse(value) < 0) {
                   return 'Enter a valid quantity.';
+                } else if (widget.availableQuantity != null &&
+                    int.parse(value) > widget.availableQuantity!) {
+                  return "Check available quantity.";
                 } else if (widget.availableQuantity == null) {
                   return 'There is no available item to borrow.';
-                } else if (widget.availableQuantity != null &&
-                    quantity > widget.availableQuantity!) {
-                  return "You can't borrow more than is it available.";
                 }
                 return null;
               },
@@ -578,6 +616,104 @@ class BorrowFormState extends State<BorrowForm> {
                   },
                   child: const Text(
                     'BOROWW',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//Vraćanje resursa
+
+class ReturnForm extends StatefulWidget {
+  final String dateFrom;
+  final String dateUntil;
+  final int resourceId;
+  final int userId;
+  final int? availableQuantity;
+
+  const ReturnForm(
+      {Key? key,
+      required this.dateFrom,
+      required this.dateUntil,
+      required this.resourceId,
+      required this.userId,
+      required this.availableQuantity})
+      : super(key: key);
+  @override
+  ReturnFormState createState() {
+    return ReturnFormState();
+  }
+}
+
+class ReturnFormState extends State<ReturnForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  String comment = "";
+  void _return() {
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      returnResource(context, widget.resourceId, widget.userId, comment);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Text
+          const Padding(
+            padding:
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Comment:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
+            ),
+          ),
+
+          //TextBox for commnet
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextFormField(
+              onSaved: (val) => comment = val!,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+              validator: (value) {
+                if (value!.length >= 20) {
+                  return 'Comment is too long.';
+                }
+                return null;
+              },
+            ),
+          ),
+
+          //Return Button
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 15, bottom: 0),
+            child: Center(
+              child: Container(
+                height: 40,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _return();
+                  },
+                  child: const Text(
+                    'RETURN',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
