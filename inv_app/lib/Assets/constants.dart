@@ -6,7 +6,7 @@ const String SIGN_IN = STRAPI + "auth/local";
 
 const String RESURS = STRAPI + "resources";
 
-const String NEW_PASSWORD = STRAPI + "newpassword";
+const String NEW_PASSWORD = STRAPI + "mail";
 const String RESOURCES = STRAPI + "resources";
 const String BORROWED = STRAPI + "borroweds";
 
