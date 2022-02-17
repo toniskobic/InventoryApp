@@ -6,6 +6,7 @@ import 'package:inv_app/Classes/borrowed.dart';
 import 'package:inv_app/Classes/resource.dart';
 import 'package:inv_app/Classes/tag.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
+import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Views/filterTag.dart';
 import 'package:inv_app/Views/modules.dart';
 import 'package:inv_app/api/loginService.dart';
@@ -330,7 +331,42 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                               fit: BoxFit.fitWidth,
                               child: ElevatedButton(
                                 child: Text("RETURN"),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(widget.name!),
+                                          content: SingleChildScrollView(
+                                            child: ListBody(
+                                              children: <Widget>[
+                                                Text(
+                                                    'Return date: ${getUntil(snapshot.data?.dateTo)}'),
+                                                Text(
+                                                    'Available quantity: ${snapshot.data?.Quantity}'),
+                                                ReturnForm(
+                                                    dateFrom: getFrom(snapshot
+                                                        .data?.dateFrom),
+                                                    dateUntil: getFrom(
+                                                        snapshot.data?.dateTo),
+                                                    resourceId: widget.id,
+                                                    userId: 41,
+                                                    availableQuantity: snapshot
+                                                        .data?.Quantity),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
                                 style: resourceButton(),
                               ),
                             ),
