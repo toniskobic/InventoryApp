@@ -6,7 +6,6 @@ import 'package:inv_app/Classes/tag.dart';
 import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/filterTag.dart';
 import 'package:inv_app/api/tagService.dart';
-import 'package:provider/provider.dart';
 
 class FilterWidget extends StatefulWidget {
   @override

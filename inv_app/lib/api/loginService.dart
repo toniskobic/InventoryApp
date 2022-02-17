@@ -3,16 +3,6 @@ import 'package:inv_app/Assets/constants.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:flutter/material.dart';
 
-
-/*
-logIn(User pUser) async {
-  var response = await http.post(Uri.parse(SIGN_IN),
-      body: {"identifier": pUser.email, "password": pUser.password});
-  var responseJson = jsonDecode(response.body);
-  print(responseJson);
-  return responseJson;
-} */
-
 LoginRequest(User pUser, BuildContext context) async {
   var url = Uri.parse(SIGN_IN);
   var response = await http
