@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inv_app/Views/Forms/registration.dart';
-import 'package:inv_app/Views/modules.dart';
 import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:inv_app/Views/Forms/passwordReset.dart';
@@ -217,10 +215,7 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const Registration()));
+                    Navigator.pushNamed(context, '/register');
                   },
                   child: const Text(
                     'SIGN UP',
@@ -242,8 +237,7 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Modules()));
+                    Navigator.pushNamed(context, '/modules');
                   },
                   child: const Text(
                     'Login with Google',

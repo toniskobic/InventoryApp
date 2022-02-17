@@ -1,15 +1,19 @@
+import 'dart:convert';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/borrowed.dart';
 import 'package:inv_app/Classes/resource.dart';
+import 'package:inv_app/Classes/resourceArguments.dart';
 import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/Home/borrowed_details.dart';
 import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Views/filter.dart';
 import 'package:inv_app/Widgets/search_widget.dart';
 import 'package:inv_app/api/resourceService.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
@@ -47,6 +51,53 @@ class _HomepageState extends State<Homepage> {
           duration: Duration(seconds: 2), backgroundColor: Colors.red[100]);
       print('$e');
     });
+    _checkNFC();
+    NfcManager.instance.startSession(
+      onDiscovered: (NfcTag tag) async {
+        Map tagData = tag.data;
+        Map tagNdef = tagData['ndef'];
+        Map cachedMessage = tagNdef['cachedMessage'];
+        Map records = cachedMessage['records'][0];
+        String payloadAsString = utf8.decode(records['payload']);
+        if (payloadAsString.contains('invapp://app/resources?id=')) {
+          int id = int.parse(payloadAsString.substring(27));
+          Navigator.pushNamed(
+            context,
+            ResourceDetails.routeName,
+            arguments: ResourceArguments(id),
+          );
+        }
+      },
+    );
+  }
+
+  _checkNFC() async {
+    bool isAvailable = await NfcManager.instance.isAvailable();
+    if (!isAvailable) {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Text(
+                        'NFC may not be supported or may be temporarily turned off.'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('GOT IT'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   @override
@@ -60,7 +111,7 @@ class _HomepageState extends State<Homepage> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50.0),
+            preferredSize: Size.fromHeight(55.0),
             child: AppBar(
                 backgroundColor: Colors.white,
                 bottom: TabBar(labelColor: Colors.black, tabs: [
@@ -149,12 +200,8 @@ class _HomepageState extends State<Homepage> {
                     subtitle: Text("Remaining: ${resursi[index].quantity}"),
                     trailing: Icon(Icons.navigate_next),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => ResourceDetails(
-                                  id: resursi[index].id,
-                                  name: resursi[index].name!)));
+                      Navigator.pushNamed(context, ResourceDetails.routeName,
+                          arguments: ResourceArguments(resursi[index].id));
                     }))
             : SizedBox.shrink());
   }

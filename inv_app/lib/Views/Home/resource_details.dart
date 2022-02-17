@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/resource.dart';
-import 'package:inv_app/Classes/tag.dart';
-import 'package:inv_app/Views/Forms/registration.dart';
-import 'package:inv_app/Views/filterTag.dart';
-import 'package:inv_app/Views/modules.dart';
-import 'package:inv_app/api/loginService.dart';
-import 'package:inv_app/Classes/user.dart';
 import 'package:inv_app/api/resourceService.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'dart:convert';
+import 'package:inv_app/Classes/tag.dart';
+import 'package:inv_app/Views/filterTag.dart';
 
 class ResourceDetailsForm extends StatefulWidget {
   @override
@@ -41,10 +34,10 @@ class ResourceDetailsFormState extends State<ResourceDetailsForm> {
 
 class ResourceDetails extends StatefulWidget {
   final int id;
-  final String name;
+  const ResourceDetails({Key? key, required this.id}) : super(key: key);
 
-  const ResourceDetails({Key? key, required this.id, required this.name})
-      : super(key: key);
+  static const routeName = '/resources';
+
   @override
   _ResourceDetailsState createState() => _ResourceDetailsState();
 }
@@ -108,7 +101,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
         //App bar
         appBar: AppBar(
           title: Text(
-            widget.name,
+            "treba dodat",
             style: TextStyle(
                 color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
           ),
@@ -384,7 +377,8 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text(widget.name),
+                                          title:
+                                              Text(snapshot.data!.name ?? "Ne"),
                                           content: SingleChildScrollView(
                                             child: ListBody(
                                               children: <Widget>[

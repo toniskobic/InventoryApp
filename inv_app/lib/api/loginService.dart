@@ -2,7 +2,6 @@ import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:flutter/material.dart';
-import '../Views/modules.dart';
 
 
 /*
@@ -21,9 +20,8 @@ LoginRequest(User pUser, BuildContext context) async {
 
   if (response.statusCode == 200) {
     //var jsonResponse = json.decode(response.body);
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => const Modules()),
-        (Route<dynamic> route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/modules', (Route<dynamic> route) => false);
   } else {
     showDialog(
         context: context,
