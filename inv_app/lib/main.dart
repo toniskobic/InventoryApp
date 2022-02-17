@@ -5,6 +5,7 @@ import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
 import 'package:inv_app/Views/filter.dart';
 import 'package:inv_app/Views/general.dart';
+import 'package:inv_app/Views/Forms/login.dart';
 import 'package:provider/provider.dart';
 
 void main() {
