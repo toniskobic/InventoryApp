@@ -49,12 +49,9 @@ class EditProfileFormState extends State<EditProfileForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
-              
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                
               ),
-              
             ),
           ),
 
@@ -70,20 +67,17 @@ class EditProfileFormState extends State<EditProfileForm> {
             ),
           ),
 
-           //TextBox za last name
+          //TextBox za last name
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
-              
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                
               ),
-              
             ),
           ),
 
-           //Tekst email
+          //Tekst email
           const Padding(
             padding:
                 EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
@@ -95,20 +89,17 @@ class EditProfileFormState extends State<EditProfileForm> {
             ),
           ),
 
-           //TextBox za email
+          //TextBox za email
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
-              
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                
               ),
-              
             ),
           ),
 
-         //Tekst Password
+          //Tekst Password
           const Padding(
             padding:
                 EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
@@ -143,9 +134,9 @@ class EditProfileFormState extends State<EditProfileForm> {
               },
             ),
           ),
-           const SizedBox(
-              height: 40,
-            ),
+          const SizedBox(
+            height: 40,
+          ),
 
           //Save changes Button
           Padding(
@@ -200,8 +191,6 @@ class _EditProfileState extends State<EditProfile> {
   var lozinka = "";
   var email = "";
 
-
-
   @override
   Widget build(BuildContext context) {
     //Dizajn
@@ -231,31 +220,8 @@ class _EditProfileState extends State<EditProfile> {
 
             //LogIn Obrazac
             const EditProfileForm(),
-
-           
-
-            
-          
-
-            
           ],
         ),
-      ),
-       bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.qr_code_scanner_rounded),
-              title: Text('QR code scanner'),
-              backgroundColor: Colors.black),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              title: Text('Home'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('My profile'),
-              backgroundColor: Colors.black),
-        ],
       ),
     );
   }

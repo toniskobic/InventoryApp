@@ -235,22 +235,6 @@ class _ChangePasswordState extends State<ChangePassword> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.qr_code_scanner_rounded),
-              title: Text('QR code scanner'),
-              backgroundColor: Colors.black),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              title: Text('Home'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('My profile'),
-              backgroundColor: Colors.black),
-        ],
-      ),
     );
   }
 }
