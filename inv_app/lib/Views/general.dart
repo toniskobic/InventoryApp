@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:inv_app/Assets/custom.dart';
+import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/Home/ar.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
 import 'package:inv_app/Views/Home/qr.dart';
+import 'package:inv_app/boxes.dart';
 import 'package:provider/provider.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 

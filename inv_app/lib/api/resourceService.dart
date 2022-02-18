@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
 import 'package:inv_app/Classes/borrowed.dart';
 import 'package:inv_app/Classes/resource.dart';
-import 'package:inv_app/Views/Home/homepage.dart';
+import 'package:inv_app/Model/userStorage.dart';
 import 'package:flutter/material.dart';
 
-final token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImlhdCI6MTY0NDU5NDQ4OCwiZXhwIjoxNjQ3MTg2NDg4fQ.zFcK32mueZp7zYdjaCATqp6FtJ_MF_fxMsdSeyVbZFo';
+Box box = Hive.box<UserStorage>('users');
+UserStorage user = box.getAt(0);
+
+final token = user.jwt;
 final header = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
@@ -67,8 +70,8 @@ Future<Borrowed> getBorrowedResourceById(int id) async {
 }
 
 Future<List<Borrowed?>> borrowedResources() async {
-  const userId = 41; // state.user.id
-  const organization = 2; // state.resoruce.organization
+  final userId = user.userId;
+  final organization = user.organizationId; // state.resoruce.organization
   final response = await http.get(
       Uri.parse(BORROWED +
           "?user.id=${userId}&resource.organization=${organization}"),
@@ -82,7 +85,7 @@ Future<List<Borrowed?>> borrowedResources() async {
 
 //posuđivanje resursa
 Future<String> borrowResource(BuildContext context, String dateFrom,
-    String dateTo, int resourceId, int userId, quantity) async {
+    String dateTo, int resourceId, int quantity) async {
   final response = await http.post(Uri.parse(BORROWED),
       headers: header,
       body: jsonEncode({
@@ -90,7 +93,7 @@ Future<String> borrowResource(BuildContext context, String dateFrom,
         "dateTo": dateTo,
         "status": true,
         "resource": resourceId,
-        "user": userId,
+        "user": user.userId,
         "Quantity": quantity
       }));
 
@@ -104,7 +107,6 @@ Future<String> borrowResource(BuildContext context, String dateFrom,
   print(dateFrom);
   print(dateTo);
   print(resourceId);
-  print(userId);
   print(quantity);
   print(response.statusCode);
   print(response.body);
@@ -113,13 +115,13 @@ Future<String> borrowResource(BuildContext context, String dateFrom,
 
 //vraćanje resursa
 Future<String> returnResource(
-    BuildContext context, int resourceId, int userId, comment) async {
+    BuildContext context, int resourceId, comment) async {
   final response = await http.post(Uri.parse(BORROWED),
       headers: header,
       body: jsonEncode({
         "status": false,
         "resource": resourceId,
-        "user": userId,
+        "user": user.userId,
         "Comment": comment
       }));
 
@@ -132,7 +134,6 @@ Future<String> returnResource(
   }*/
 
   print(resourceId);
-  print(userId);
   print(comment);
   print(response.statusCode);
   print(response.body);

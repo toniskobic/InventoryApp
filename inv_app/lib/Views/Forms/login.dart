@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:inv_app/Views/Forms/passwordReset.dart';
+import 'package:inv_app/boxes.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -88,8 +90,8 @@ class LoginFormState extends State<LoginForm> {
                   suffix: InkWell(
                     onTap: _togglePasswordView,
                     child: Icon(passwordHidden
-                        ? Icons.visibility
-                        : Icons.visibility_off),
+                        ? Icons.visibility_off
+                        : Icons.visibility),
                   )),
               validator: (value) {
                 if (value == null || value.isEmpty) {
