@@ -45,17 +45,10 @@ class ResourceDetails extends StatefulWidget {
 class _ResourceDetailsState extends State<ResourceDetails> {
   DateTime date = DateTime.now();
   DateTimeRange dateRange = DateTimeRange(
-      start: DateTime(DateTime.now().year - 5),
-      end: DateTime(DateTime.now().year + 5));
-
-//ispisuje selektirani datum u button
-  String getText() {
-    if (date == null) {
-      return 'Select Date';
-    } else {
-      return DateFormat('dd/MM/yyyy').format(date);
-    }
-  }
+      start: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      end: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day + 30));
 
 //ispisuje datum from
   String getFrom() {
@@ -390,7 +383,6 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                                                     dateFrom: getFromB(),
                                                     dateUntil: getUntilB(),
                                                     resourceId: widget.id,
-                                                    userId: 41,
                                                     availableQuantity: snapshot
                                                         .data?.quantity),
                                               ],
@@ -426,8 +418,8 @@ class _ResourceDetailsState extends State<ResourceDetails> {
     final newDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 5),
-      lastDate: DateTime(DateTime.now().year + 5),
+      firstDate: DateTime(DateTime.now().day),
+      lastDate: DateTime(DateTime.now().day + 30),
     );
     if (newDate == null) return;
 
@@ -441,8 +433,11 @@ class _ResourceDetailsState extends State<ResourceDetails> {
     );
     final newDateRange = await showDateRangePicker(
       context: context,
-      firstDate: DateTime(DateTime.now().year - 5),
-      lastDate: DateTime(DateTime.now().year + 5),
+      currentDate: DateTime.now(),
+      firstDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      lastDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day + 30),
       initialDateRange: dateRange,
     );
 
@@ -500,7 +495,6 @@ class BorrowForm extends StatefulWidget {
   final String dateFrom;
   final String dateUntil;
   final int resourceId;
-  final int userId;
   final int? availableQuantity;
 
   const BorrowForm(
@@ -508,7 +502,6 @@ class BorrowForm extends StatefulWidget {
       required this.dateFrom,
       required this.dateUntil,
       required this.resourceId,
-      required this.userId,
       required this.availableQuantity})
       : super(key: key);
   @override
@@ -526,7 +519,7 @@ class BorrowFormState extends State<BorrowForm> {
     if (form!.validate()) {
       form.save();
       borrowResource(context, widget.dateFrom, widget.dateUntil,
-          widget.resourceId, widget.userId, quantity);
+          widget.resourceId, quantity);
     }
   }
 
@@ -587,104 +580,6 @@ class BorrowFormState extends State<BorrowForm> {
                   },
                   child: const Text(
                     'BOROWW',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-//Vraćanje resursa
-
-class ReturnForm extends StatefulWidget {
-  final String dateFrom;
-  final String dateUntil;
-  final int resourceId;
-  final int userId;
-  final int? availableQuantity;
-
-  const ReturnForm(
-      {Key? key,
-      required this.dateFrom,
-      required this.dateUntil,
-      required this.resourceId,
-      required this.userId,
-      required this.availableQuantity})
-      : super(key: key);
-  @override
-  ReturnFormState createState() {
-    return ReturnFormState();
-  }
-}
-
-class ReturnFormState extends State<ReturnForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  String comment = "";
-  void _return() {
-    final form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      returnResource(context, widget.resourceId, widget.userId, comment);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //Text
-          const Padding(
-            padding:
-                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Comment:',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black, fontSize: 15)),
-            ),
-          ),
-
-          //TextBox for commnet
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextFormField(
-              onSaved: (val) => comment = val!,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-              validator: (value) {
-                if (value!.length >= 20) {
-                  return 'Comment is too long.';
-                }
-                return null;
-              },
-            ),
-          ),
-
-          //Return Button
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 15, bottom: 0),
-            child: Center(
-              child: Container(
-                height: 40,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _return();
-                  },
-                  child: const Text(
-                    'RETURN',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
