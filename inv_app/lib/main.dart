@@ -5,6 +5,7 @@ import 'package:inv_app/Classes/resourceArguments.dart';
 import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/Home/ar.dart';
+import 'package:inv_app/Views/Home/qr.dart';
 import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Views/general.dart';
 import 'package:inv_app/Views/Forms/login.dart';
@@ -64,7 +65,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/register': (context) => Registration(),
         '/modules': (context) => Modules(),
-        '/unity': (context) => ARwayKitUnityScreen()
+        '/unity': (context) => ARwayKitUnityScreen(),
+        '/qr': (context) => QRScreen()
       },
       onGenerateRoute: RouteGenerator.generateRoute,
       home: Login(),

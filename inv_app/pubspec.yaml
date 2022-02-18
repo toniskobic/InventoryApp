@@ -46,6 +46,7 @@ dependencies:
   google_fonts: ^2.2.0
   fluentui_system_icons: ^1.1.160
   provider: ^6.0.2
+  qr_code_scanner: ^0.7.0
   
   # hive database
   hive: ^2.0.3

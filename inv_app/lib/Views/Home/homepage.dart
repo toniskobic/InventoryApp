@@ -50,53 +50,6 @@ class _HomepageState extends State<Homepage> {
           duration: Duration(seconds: 2), backgroundColor: Colors.red[100]);
       print('$e');
     });
-    _checkNFC();
-    /* NfcManager.instance.startSession(
-      onDiscovered: (NfcTag tag) async {
-        Map tagData = tag.data;
-        Map tagNdef = tagData['ndef'];
-        Map cachedMessage = tagNdef['cachedMessage'];
-        Map records = cachedMessage['records'][0];
-        String payloadAsString = utf8.decode(records['payload']);
-        if (payloadAsString.contains('invapp://app/resources?id=')) {
-          int id = int.parse(payloadAsString.substring(27));
-          Navigator.pushNamed(
-            context,
-            ResourceDetails.routeName,
-            arguments: ResourceArguments(id),
-          );
-        }
-      },
-    ); */
-  }
-
-  _checkNFC() async {
-    bool isAvailable = await NfcManager.instance.isAvailable();
-    if (!isAvailable) {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Error'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: const <Widget>[
-                    Text(
-                        'NFC may not be supported or may be temporarily turned off.'),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('GOT IT'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
-    }
   }
 
   @override
