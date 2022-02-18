@@ -519,7 +519,7 @@ class BorrowFormState extends State<BorrowForm> {
     if (form!.validate()) {
       form.save();
       borrowResource(context, widget.dateFrom, widget.dateUntil,
-          widget.resourceId, quantity);
+          widget.resourceId, quantity, widget.availableQuantity!);
     }
   }
 
@@ -579,7 +579,7 @@ class BorrowFormState extends State<BorrowForm> {
                     _borrow();
                   },
                   child: const Text(
-                    'BOROWW',
+                    'BOROW',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),

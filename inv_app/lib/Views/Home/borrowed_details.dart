@@ -343,15 +343,20 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                                                 Text(
                                                     'Return date: ${getUntil(snapshot.data?.dateTo)}'),
                                                 Text(
-                                                    'Available quantity: ${snapshot.data?.Quantity}'),
+                                                    'Borrowed quantity: ${snapshot.data?.Quantity}'),
                                                 ReturnForm(
-                                                    dateFrom: getFrom(snapshot
-                                                        .data?.dateFrom),
-                                                    dateUntil: getFrom(
-                                                        snapshot.data?.dateTo),
-                                                    resourceId: widget.id,
-                                                    availableQuantity: snapshot
-                                                        .data?.Quantity),
+                                                  dateFrom: getFrom(
+                                                      snapshot.data?.dateFrom),
+                                                  dateUntil: getFrom(
+                                                      snapshot.data?.dateTo),
+                                                  resourceId: snapshot
+                                                      .data!.resource!.id,
+                                                  borrowedQuantity:
+                                                      snapshot.data?.Quantity,
+                                                  availableQuantity: snapshot
+                                                      .data!.resource!.quantity,
+                                                  borrowedId: snapshot.data!.id,
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -467,14 +472,18 @@ class ReturnForm extends StatefulWidget {
   final String dateFrom;
   final String dateUntil;
   final int resourceId;
+  final int? borrowedQuantity;
   final int? availableQuantity;
+  final int? borrowedId;
 
   const ReturnForm(
       {Key? key,
       required this.dateFrom,
       required this.dateUntil,
       required this.resourceId,
-      required this.availableQuantity})
+      required this.borrowedQuantity,
+      required this.availableQuantity,
+      required this.borrowedId})
       : super(key: key);
   @override
   ReturnFormState createState() {
@@ -490,7 +499,13 @@ class ReturnFormState extends State<ReturnForm> {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      returnResource(context, widget.resourceId, comment);
+      returnResource(
+          context,
+          widget.resourceId,
+          comment,
+          widget.borrowedQuantity!,
+          widget.availableQuantity!,
+          widget.borrowedId!);
     }
   }
 
