@@ -33,9 +33,6 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
 
-    //filterState = context.read<FilterState>();
-    /* print(filterState.sort);
-    print(filterState.selectedTagsList); */
     getResources()
         .then((response) => {
               if (mounted)
@@ -54,11 +51,6 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    /* if (ModalRoute.of(context)?.settings.arguments != null) {
-      final args = ModalRoute.of(context)!.settings.arguments as FilterState;
-      print(args.sort);
-      print(args.selectedTagsList);
-    } */
     return DefaultTabController(
       length: 2,
       child: Scaffold(

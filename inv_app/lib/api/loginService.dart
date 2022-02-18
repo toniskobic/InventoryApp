@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
@@ -39,27 +40,8 @@ LoginRequest(User pUser, BuildContext context) async {
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/modules', (Route<dynamic> route) => false);
   } else {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Incorrect username/email or password'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[
-                  Text('Enter a valid username/password and try again.'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
+    Get.snackbar('Login Error',
+        'Incorrect username/email or password \nEnter a valid username/password and try again.',
+        duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
   }
 }
