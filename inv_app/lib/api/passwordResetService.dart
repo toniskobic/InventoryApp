@@ -9,11 +9,28 @@ NewPasswordRequest(User pUser, BuildContext context) async {
   var response = await http.post(url, body: {"identifier": pUser.email});
 
   if (response.statusCode == 200) {
-    /*
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => const Login()),
-        (Route<dynamic> route) => false);
-    */
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Request approved'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('New password has been sent on your email.'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   } else {
     showDialog(
         context: context,

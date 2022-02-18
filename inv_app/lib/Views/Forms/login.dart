@@ -90,8 +90,8 @@ class LoginFormState extends State<LoginForm> {
                   suffix: InkWell(
                     onTap: _togglePasswordView,
                     child: Icon(passwordHidden
-                        ? Icons.visibility
-                        : Icons.visibility_off),
+                        ? Icons.visibility_off
+                        : Icons.visibility),
                   )),
               validator: (value) {
                 if (value == null || value.isEmpty) {

@@ -1,8 +1,10 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/State/filterState.dart';
+import 'package:inv_app/Views/Home/ar.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
 import 'package:inv_app/boxes.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +31,7 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
   } */
 
   static List<Widget> _widgetOptions = <Widget>[
+    ARwayKitUnityScreen(),
     Text(
       'Index 1: QR code scanner',
       style: navBarStyle(),
@@ -65,6 +68,8 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(FluentIcons.scan_object_24_filled), label: 'AR'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.qr_code_scanner_rounded),
                 label: 'QR code scanner'),
