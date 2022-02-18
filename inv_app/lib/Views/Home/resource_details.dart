@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Classes/resource.dart';
@@ -86,6 +87,28 @@ class _ResourceDetailsState extends State<ResourceDetails> {
     }
   }
 
+  Resource resurs = Resource(id: 0, name: null);
+
+  @override
+  void initState() {
+    super.initState();
+
+    getResourceById(widget.id)
+        .then((response) => {
+              if (mounted)
+                {
+                  setState(() {
+                    resurs = response;
+                  })
+                }
+            })
+        .catchError((e) {
+      Get.snackbar('Error', '$e',
+          duration: Duration(seconds: 2), backgroundColor: Colors.red[100]);
+      print('$e');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //Dizajn
@@ -93,11 +116,13 @@ class _ResourceDetailsState extends State<ResourceDetails> {
         backgroundColor: Colors.white,
         //App bar
         appBar: AppBar(
-          title: Text(
-            "treba dodat",
-            style: TextStyle(
-                color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
-          ),
+          title: resurs.name != null
+              ? Text(
+                  resurs.name ?? "",
+                  style: TextStyle(
+                      color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
+                )
+              : CircularProgressIndicator(),
           centerTitle: true,
         ),
 
@@ -131,27 +156,6 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                           )),
                       const SizedBox(
                         height: 20,
-                      ),
-
-                      //tekst resource description
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                              'Resource description: ${snapshot.data?.description == null ? "No description" : snapshot.data?.description}',
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      Divider(
-                        height: 20,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
                       ),
 
                       //datum
@@ -269,57 +273,6 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                         endIndent: 20,
                       ),
 
-                      //Status
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Status: ${snapshot.data?.status == null ? "No status" : snapshot.data?.status}',
-                              textAlign: TextAlign.left,
-                              style: resourceDetailsStyle(),
-                            )),
-                      ),
-                      Divider(
-                        height: 25,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-
-                      //Location:
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Location:',
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20.0, right: 30.0, top: 0, bottom: 0),
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.center_focus_strong,
-                              size: 35,
-                              color: Colors.blue,
-                            )),
-                      ),
-                      Divider(
-                        height: 40,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-
                       // Modularni shit
 
                       Padding(
@@ -390,7 +343,7 @@ class _ResourceDetailsState extends State<ResourceDetails> {
                                           ),
                                           actions: <Widget>[
                                             TextButton(
-                                              child: const Text('Cancel'),
+                                              child: const Text('Close'),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
@@ -579,7 +532,7 @@ class BorrowFormState extends State<BorrowForm> {
                     _borrow();
                   },
                   child: const Text(
-                    'BOROW',
+                    'BORROW',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),

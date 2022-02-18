@@ -94,7 +94,7 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
         //App bar
         appBar: AppBar(
           title: Text(
-            widget.name ?? "Unknown",
+            widget.name ?? "Fetching...",
             style: TextStyle(
                 color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
           ),
@@ -131,27 +131,6 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                           )),
                       const SizedBox(
                         height: 20,
-                      ),
-
-                      //tekst resource description
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                              'Resource description: ${snapshot.data?.resource?.description == null ? "No description" : snapshot.data!.resource!.description}',
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      Divider(
-                        height: 20,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
                       ),
 
                       //datum
@@ -243,57 +222,6 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                         endIndent: 20,
                       ),
 
-                      //Status
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Status: ${snapshot.data?.status == null ? "No status" : snapshot.data?.status == true ? "Borrowed" : "Available"}',
-                              textAlign: TextAlign.left,
-                              style: resourceDetailsStyle(),
-                            )),
-                      ),
-                      Divider(
-                        height: 25,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-
-                      //Location:
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Location:',
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20.0, right: 30.0, top: 0, bottom: 0),
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.center_focus_strong,
-                              size: 35,
-                              color: Colors.blue,
-                            )),
-                      ),
-                      Divider(
-                        height: 40,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-
                       // Modularni shit
 
                       Padding(
@@ -362,7 +290,7 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                                           ),
                                           actions: <Widget>[
                                             TextButton(
-                                              child: const Text('Cancel'),
+                                              child: const Text('Close'),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },

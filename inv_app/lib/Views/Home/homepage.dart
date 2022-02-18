@@ -159,7 +159,8 @@ class _HomepageState extends State<Homepage> {
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) => snapshot
                               .data![index]!.resource!.quantity! >
-                          0
+                          0 && snapshot
+                              .data![index]!.status == true
                       ? Card(
                           child: ListTile(
                               leading: CircleAvatar(
