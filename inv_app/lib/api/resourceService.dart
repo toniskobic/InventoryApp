@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:inv_app/Assets/constants.dart';
@@ -84,8 +84,13 @@ Future<List<Borrowed?>> borrowedResources() async {
 }
 
 //posuđivanje resursa
-Future<String> borrowResource(BuildContext context, String dateFrom,
-    String dateTo, int resourceId, int quantity) async {
+Future<String> borrowResource(
+    BuildContext context,
+    String dateFrom,
+    String dateTo,
+    int resourceId,
+    int quantityBorrowed,
+    int availableQuantity) async {
   final response = await http.post(Uri.parse(BORROWED),
       headers: header,
       body: jsonEncode({
@@ -94,48 +99,61 @@ Future<String> borrowResource(BuildContext context, String dateFrom,
         "status": true,
         "resource": resourceId,
         "user": user.userId,
-        "Quantity": quantity
+        "Quantity": quantityBorrowed
       }));
 
-  /*
-  if (response.statusCode == 200) {
-    Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Homepage()));
-  }*/
-  print(dateFrom);
-  print(dateTo);
-  print(resourceId);
-  print(quantity);
-  print(response.statusCode);
-  print(response.body);
+  int quantity = availableQuantity - quantityBorrowed;
+
+  final response1 = await http.put(
+      Uri.parse(RESOURCES + '/' + resourceId.toString()),
+      headers: header,
+      body: jsonEncode({"quantity": quantity}));
+
+  if (response.statusCode == 200 && response1.statusCode == 200) {
+    Get.snackbar(
+        'Request approved', 'You successfully borrowed the selected resource.',
+        duration: Duration(seconds: 3), backgroundColor: Colors.grey.shade100);
+  } else {
+    Get.snackbar('Bad request', 'Please try that again.',
+        duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
+  }
+
   return response.body;
 }
 
 //vraćanje resursa
 Future<String> returnResource(
-    BuildContext context, int resourceId, comment) async {
-  final response = await http.post(Uri.parse(BORROWED),
+    BuildContext context,
+    int resourceId,
+    String comment,
+    int borrowedQuantity,
+    int availableQuantity,
+    int borrowedId) async {
+  final response = await http.put(
+      Uri.parse(BORROWED + '/' + borrowedId.toString()),
       headers: header,
-      body: jsonEncode({
-        "status": false,
-        "resource": resourceId,
-        "user": user.userId,
-        "Comment": comment
-      }));
+      body: jsonEncode({"status": false, "Comment": comment}));
 
-  /*
-  if (response.statusCode == 200) {
-    Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Homepage()));
-  }*/
+  int quantity = availableQuantity + borrowedQuantity;
 
-  print(resourceId);
-  print(comment);
-  print(response.statusCode);
-  print(response.body);
+  final response1 = await http.put(
+      Uri.parse(RESOURCES + '/' + resourceId.toString()),
+      headers: header,
+      body: jsonEncode({"quantity": quantity}));
+
+  if (response.statusCode == 200 && response1.statusCode == 200) {
+    Get.snackbar(
+        'Request approved', 'You successfully returned the selected resource.',
+        duration: Duration(seconds: 3), backgroundColor: Colors.grey.shade100);
+  } else {
+    Get.snackbar('Bad request', 'Please try that again.',
+        duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
+  }
+
+  print(RESOURCES + '/' + resourceId.toString());
+  print(availableQuantity);
+  print(borrowedQuantity);
+  print(quantity);
+
   return response.body;
 }

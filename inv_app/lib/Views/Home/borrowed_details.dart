@@ -94,7 +94,7 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
         //App bar
         appBar: AppBar(
           title: Text(
-            widget.name ?? "Unknown",
+            widget.name ?? "Fetching...",
             style: TextStyle(
                 color: Colors.white, fontFamily: 'Mulish', fontSize: 20),
           ),
@@ -131,27 +131,6 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                           )),
                       const SizedBox(
                         height: 20,
-                      ),
-
-                      //tekst resource description
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                              'Resource description: ${snapshot.data?.resource?.description == null ? "No description" : snapshot.data!.resource!.description}',
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      Divider(
-                        height: 20,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
                       ),
 
                       //datum
@@ -243,57 +222,6 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                         endIndent: 20,
                       ),
 
-                      //Status
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Status: ${snapshot.data?.status == null ? "No status" : snapshot.data?.status == true ? "Borrowed" : "Available"}',
-                              textAlign: TextAlign.left,
-                              style: resourceDetailsStyle(),
-                            )),
-                      ),
-                      Divider(
-                        height: 25,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-
-                      //Location:
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 0, bottom: 0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Location:',
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20.0, right: 30.0, top: 0, bottom: 0),
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.center_focus_strong,
-                              size: 35,
-                              color: Colors.blue,
-                            )),
-                      ),
-                      Divider(
-                        height: 40,
-                        thickness: 1,
-                        color: Colors.grey,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-
                       // Modularni shit
 
                       Padding(
@@ -343,21 +271,26 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                                                 Text(
                                                     'Return date: ${getUntil(snapshot.data?.dateTo)}'),
                                                 Text(
-                                                    'Available quantity: ${snapshot.data?.Quantity}'),
+                                                    'Borrowed quantity: ${snapshot.data?.Quantity}'),
                                                 ReturnForm(
-                                                    dateFrom: getFrom(snapshot
-                                                        .data?.dateFrom),
-                                                    dateUntil: getFrom(
-                                                        snapshot.data?.dateTo),
-                                                    resourceId: widget.id,
-                                                    availableQuantity: snapshot
-                                                        .data?.Quantity),
+                                                  dateFrom: getFrom(
+                                                      snapshot.data?.dateFrom),
+                                                  dateUntil: getFrom(
+                                                      snapshot.data?.dateTo),
+                                                  resourceId: snapshot
+                                                      .data!.resource!.id,
+                                                  borrowedQuantity:
+                                                      snapshot.data?.Quantity,
+                                                  availableQuantity: snapshot
+                                                      .data!.resource!.quantity,
+                                                  borrowedId: snapshot.data!.id,
+                                                ),
                                               ],
                                             ),
                                           ),
                                           actions: <Widget>[
                                             TextButton(
-                                              child: const Text('Cancel'),
+                                              child: const Text('Close'),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
@@ -467,14 +400,18 @@ class ReturnForm extends StatefulWidget {
   final String dateFrom;
   final String dateUntil;
   final int resourceId;
+  final int? borrowedQuantity;
   final int? availableQuantity;
+  final int? borrowedId;
 
   const ReturnForm(
       {Key? key,
       required this.dateFrom,
       required this.dateUntil,
       required this.resourceId,
-      required this.availableQuantity})
+      required this.borrowedQuantity,
+      required this.availableQuantity,
+      required this.borrowedId})
       : super(key: key);
   @override
   ReturnFormState createState() {
@@ -490,7 +427,13 @@ class ReturnFormState extends State<ReturnForm> {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      returnResource(context, widget.resourceId, comment);
+      returnResource(
+          context,
+          widget.resourceId,
+          comment,
+          widget.borrowedQuantity!,
+          widget.availableQuantity!,
+          widget.borrowedId!);
     }
   }
 
