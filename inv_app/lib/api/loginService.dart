@@ -10,7 +10,14 @@ import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/boxes.dart';
 
 void addUser(int? userId, String? jwt, int? organizationId) async {
-  var box = Hive.box<UserStorage>('users');
+  bool exists = await Hive.boxExists('users');
+  var box;
+  if (exists) {
+    box = Hive.box<UserStorage>('users');
+  } else {
+    box = await Hive.openBox<UserStorage>('users');
+  }
+  box.deleteAll(box.keys);
   final user = UserStorage()
     ..userId = userId
     ..jwt = jwt

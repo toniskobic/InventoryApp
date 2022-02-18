@@ -50,6 +50,10 @@ class RouteGenerator {
   }
 }
 
+Future<bool> checkState() async {
+  return await Hive.boxExists('users');
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

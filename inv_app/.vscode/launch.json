@@ -7,13 +7,20 @@
         {
             "name": "inv_app",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
         },
         {
-            "name": "inv_app (profile mode)",
+            "name": "inv_app (debug mode)",
+            "cwd": "inv_app",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "debug",
+            "args": [
+                "--no-sound-null-safety"
+            ]
         }
     ]
 }

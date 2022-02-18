@@ -56,7 +56,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   
-  build_runner: ^1.12.2
+  #build_runner: ^1.12.2
   hive_generator: ^1.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -83,6 +83,7 @@ flutter:
   assets:
     - asset/images/logo.png
     - asset/images/resource_pic.png
+    - asset/images/profilna.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

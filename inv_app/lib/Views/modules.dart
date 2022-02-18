@@ -9,13 +9,6 @@ class Modules extends StatefulWidget {
 
 class _ModulesState extends State<Modules> {
   @override
-  void dispose() {
-    Hive.close();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

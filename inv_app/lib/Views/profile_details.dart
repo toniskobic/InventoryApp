@@ -87,8 +87,8 @@ class HomeFormState extends State<HomeForm> {
                 color: Colors.blue, borderRadius: BorderRadius.circular(20)),
             child: ElevatedButton(
               onPressed: () {
-                Hive.deleteFromDisk();
                 Hive.close();
+                Hive.deleteFromDisk();
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/login', (Route<dynamic> route) => false);
               },
