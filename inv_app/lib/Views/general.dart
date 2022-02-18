@@ -1,11 +1,21 @@
+import 'dart:convert';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:inv_app/Assets/custom.dart';
+import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/Home/ar.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
 import 'package:inv_app/Views/profile_details.dart';
+import 'package:inv_app/Views/Home/qr.dart';
+import 'package:inv_app/boxes.dart';
 import 'package:provider/provider.dart';
+import 'package:nfc_manager/nfc_manager.dart';
+
+import '../Classes/resourceArguments.dart';
+import 'Home/resource_details.dart';
 
 class GeneralStatefulWidget extends StatefulWidget {
   const GeneralStatefulWidget({Key? key}) : super(key: key);
@@ -18,12 +28,61 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
   int _selectedIndex = 2;
   PageController pageController = new PageController();
 
+  @override
+  void initState() {
+    super.initState();
+    _nfcDialog();
+    NfcManager.instance.startSession(
+      onDiscovered: (NfcTag tag) async {
+        Map tagData = tag.data;
+        Map tagNdef = tagData['ndef'];
+        Map cachedMessage = tagNdef['cachedMessage'];
+        Map records = cachedMessage['records'][0];
+        String payloadAsString = utf8.decode(records['payload']);
+        if (payloadAsString.contains('invapp://app/resources?id=')) {
+          int id = int.parse(payloadAsString.substring(27));
+          Navigator.pushNamed(
+            context,
+            ResourceDetails.routeName,
+            arguments: ResourceArguments(id),
+          );
+        }
+      },
+    );
+  }
+
+  _nfcDialog() async {
+    bool isAvailable = await NfcManager.instance.isAvailable();
+    if (!isAvailable) {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Text(
+                        'NFC may not be supported or may be temporarily turned off.'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('GOT IT'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+  }
+
   static List<Widget> _widgetOptions = <Widget>[
     ARwayKitUnityScreen(),
-    Text(
-      'Index 1: QR code scanner',
-      style: navBarStyle(),
-    ),
+    QRScreen(),
     Homepage(),
     ProfileDetails(),
   ];
@@ -35,6 +94,8 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
       });
     }
     if (pageController.hasClients) {
+      NfcManager.instance.stopSession();
+
       pageController.animateToPage(index,
           duration: Duration(seconds: 1), curve: Curves.decelerate);
     }

@@ -56,8 +56,8 @@ class BorrowedResourceDetails extends StatefulWidget {
 class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
   DateTime date = DateTime.now();
   DateTimeRange dateRange = DateTimeRange(
-      start: DateTime(DateTime.now().year - 5),
-      end: DateTime(DateTime.now().year + 5));
+      start: DateTime(DateTime.now().day - 30),
+      end: DateTime(DateTime.now().day + 30));
 
 //ispisuje selektirani datum u button
   String getText() {
@@ -350,7 +350,6 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
                                                     dateUntil: getFrom(
                                                         snapshot.data?.dateTo),
                                                     resourceId: widget.id,
-                                                    userId: 41,
                                                     availableQuantity: snapshot
                                                         .data?.Quantity),
                                               ],
@@ -409,8 +408,8 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
     );
     final newDateRange = await showDateRangePicker(
       context: context,
-      firstDate: DateTime(DateTime.now().year - 5),
-      lastDate: DateTime(DateTime.now().year + 5),
+      firstDate: DateTime(DateTime.now().day - 30),
+      lastDate: DateTime(DateTime.now().day + 30),
       initialDateRange: dateRange,
     );
 
@@ -459,5 +458,106 @@ class _BorrowedResourceDetailsState extends State<BorrowedResourceDetails> {
     } else {
       return Text('');
     }
+  }
+}
+
+//Vraćanje resursa
+
+class ReturnForm extends StatefulWidget {
+  final String dateFrom;
+  final String dateUntil;
+  final int resourceId;
+  final int? availableQuantity;
+
+  const ReturnForm(
+      {Key? key,
+      required this.dateFrom,
+      required this.dateUntil,
+      required this.resourceId,
+      required this.availableQuantity})
+      : super(key: key);
+  @override
+  ReturnFormState createState() {
+    return ReturnFormState();
+  }
+}
+
+class ReturnFormState extends State<ReturnForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  String comment = "";
+  void _return() {
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      returnResource(context, widget.resourceId, comment);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Text
+          const Padding(
+            padding:
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Comment:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
+            ),
+          ),
+
+          //TextBox for commnet
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextFormField(
+              maxLines: null,
+              onSaved: (val) => comment = val!,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 10.0),
+              ),
+              validator: (value) {
+                if (value!.length >= 200) {
+                  return 'Comment is too long.';
+                }
+                return null;
+              },
+            ),
+          ),
+
+          //Return Button
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 15, bottom: 0),
+            child: Center(
+              child: Container(
+                height: 40,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _return();
+                  },
+                  child: const Text(
+                    'RETURN',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

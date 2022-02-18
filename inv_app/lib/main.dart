@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inv_app/Classes/resourceArguments.dart';
+import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/Home/ar.dart';
+import 'package:inv_app/Views/Home/qr.dart';
 import 'package:inv_app/Views/Home/resource_details.dart';
 import 'package:inv_app/Views/general.dart';
 import 'package:inv_app/Views/Forms/login.dart';
@@ -11,8 +13,17 @@ import 'package:inv_app/Views/modules.dart';
 import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
 import 'package:inv_app/Views/filter.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(UserAdapter());
+
+  await Hive.openBox<UserStorage>('users');
+
   runApp(const MyApp());
 }
 
@@ -54,7 +65,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/register': (context) => Registration(),
         '/modules': (context) => Modules(),
-        '/unity': (context) => ARwayKitUnityScreen()
+        '/unity': (context) => ARwayKitUnityScreen(),
+        '/qr': (context) => QRScreen()
       },
       onGenerateRoute: RouteGenerator.generateRoute,
       home: Login(),

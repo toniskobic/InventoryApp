@@ -77,7 +77,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     children: [
                       /* SORT */
                       ExpansionPanel(
-                        //hasIcon: false,
+                        // hasIcon: false,
                         headerBuilder: (context, isExpanded) {
                           return ListTile(
                             title: Text('Sort', style: filterStyle()),
@@ -120,7 +120,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       ),
                       /* TAG */
                       ExpansionPanel(
-                        //hasIcon: false,
+                        // hasIcon: false,
                         headerBuilder: (context, isExpanded) {
                           return ListTile(
                             title: Text('Tag', style: filterStyle()),

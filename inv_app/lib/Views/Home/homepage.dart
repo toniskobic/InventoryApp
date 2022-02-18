@@ -33,9 +33,6 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
 
-    //filterState = context.read<FilterState>();
-    /* print(filterState.sort);
-    print(filterState.selectedTagsList); */
     getResources()
         .then((response) => {
               if (mounted)
@@ -50,33 +47,6 @@ class _HomepageState extends State<Homepage> {
           duration: Duration(seconds: 2), backgroundColor: Colors.red[100]);
       print('$e');
     });
-    _checkNFC();
-    /* NfcManager.instance.startSession(
-      onDiscovered: (NfcTag tag) async {
-        Map tagData = tag.data;
-        Map tagNdef = tagData['ndef'];
-        Map cachedMessage = tagNdef['cachedMessage'];
-        Map records = cachedMessage['records'][0];
-        String payloadAsString = utf8.decode(records['payload']);
-        if (payloadAsString.contains('invapp://app/resources?id=')) {
-          int id = int.parse(payloadAsString.substring(27));
-          Navigator.pushNamed(
-            context,
-            ResourceDetails.routeName,
-            arguments: ResourceArguments(id),
-          );
-        }
-      },
-    ); */
-  }
-
-  _checkNFC() async {
-    bool isAvailable = await NfcManager.instance.isAvailable();
-    if (!isAvailable) {
-      Get.snackbar(
-          'Error', 'NFC may not be supported or may be temporarily turned off.',
-          duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
-    }
   }
 
   @override
