@@ -22,7 +22,8 @@ class _ModulesState extends State<Modules> {
               color: Colors.blue, borderRadius: BorderRadius.circular(10)),
           child: TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/home', (Route<dynamic> route) => false);
             },
             child: const Text(
               'Enter',

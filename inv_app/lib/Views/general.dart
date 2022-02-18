@@ -4,6 +4,7 @@ import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/Home/ar.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
+import 'package:inv_app/Views/profile_details.dart';
 import 'package:provider/provider.dart';
 
 class GeneralStatefulWidget extends StatefulWidget {
@@ -14,7 +15,7 @@ class GeneralStatefulWidget extends StatefulWidget {
 }
 
 class HomeScreenState extends State<GeneralStatefulWidget> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
   PageController pageController = new PageController();
 
   static List<Widget> _widgetOptions = <Widget>[
@@ -24,10 +25,7 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
       style: navBarStyle(),
     ),
     Homepage(),
-    Text(
-      'Index 2: My profile',
-      style: navBarStyle(),
-    ),
+    ProfileDetails(),
   ];
 
   void _onItemTapped(int index) {
