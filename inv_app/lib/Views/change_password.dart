@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inv_app/Views/Forms/registration.dart';
 import 'package:inv_app/Views/modules.dart';
-import 'package:inv_app/api/loginService.dart';
+import 'package:inv_app/api/newPasswordService.dart';
 import 'package:inv_app/Classes/user.dart';
+import 'package:inv_app/api/resourceService.dart';
 
 class ChangePasswordForm extends StatefulWidget {
   const ChangePasswordForm({Key? key}) : super(key: key);
@@ -17,12 +18,15 @@ class ChangePasswordFormState extends State<ChangePasswordForm> {
 
   bool passwordHidden = true;
 
-  User user = User();
-  void _logIn() {
+  String currentPass = "";
+  String newPass = "";
+  String confirmPass = "";
+
+  void _saveNewPassword() {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      LoginRequest(user, context);
+      newPasswordRequest(context, currentPass, newPass, confirmPass);
     }
   }
 
@@ -33,11 +37,10 @@ class ChangePasswordFormState extends State<ChangePasswordForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-    
-           //Tekst current password
+          //Tekst current password
           const Padding(
             padding:
-                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 0, bottom: 5),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text('CURRENT PASSWORD:',
@@ -49,7 +52,7 @@ class ChangePasswordFormState extends State<ChangePasswordForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
-              onSaved: (val) => user.password = val,
+              onSaved: (val) => currentPass = val!,
               obscureText: !passwordHidden,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -69,14 +72,14 @@ class ChangePasswordFormState extends State<ChangePasswordForm> {
               },
             ),
           ),
-           const SizedBox(
-              height: 40,
-            ),
+          const SizedBox(
+            height: 40,
+          ),
 
-         //Tekst new Password
+          //Tekst new Password
           const Padding(
             padding:
-                EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 5),
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 0, bottom: 5),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text('NEW PASSWORD:',
@@ -88,7 +91,7 @@ class ChangePasswordFormState extends State<ChangePasswordForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
-              onSaved: (val) => user.password = val,
+              onSaved: (val) => newPass = val!,
               obscureText: !passwordHidden,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -108,14 +111,53 @@ class ChangePasswordFormState extends State<ChangePasswordForm> {
               },
             ),
           ),
-           const SizedBox(
-              height: 40,
+          const SizedBox(
+            height: 40,
+          ),
+
+          //Tekst confirm password
+          const Padding(
+            padding:
+                EdgeInsets.only(left: 15.0, right: 15.0, top: 0, bottom: 5),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('CONFIRM PASSWORD:',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
             ),
+          ),
+          //TextBox za confirm password
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextFormField(
+              onSaved: (val) => confirmPass = val!,
+              obscureText: !passwordHidden,
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: '********',
+                  prefixIcon: const Icon(Icons.lock),
+                  suffix: InkWell(
+                    onTap: _togglePasswordView,
+                    child: Icon(passwordHidden
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                  )),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Confirm your new password';
+                }
+                return null;
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
 
           //Save changes Button
           Padding(
             padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 15, bottom: 0),
+                left: 15.0, right: 15.0, top: 0, bottom: 0),
             child: Center(
               child: Container(
                 height: 40,
@@ -125,11 +167,7 @@ class ChangePasswordFormState extends State<ChangePasswordForm> {
                     borderRadius: BorderRadius.circular(20)),
                 child: ElevatedButton(
                   onPressed: () {
-                    _logIn();
-                    /*
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Modules()));
-                    */
+                    _saveNewPassword();
                   },
                   child: const Text(
                     'SAVE CHANGES',
@@ -164,9 +202,6 @@ class _ChangePasswordState extends State<ChangePassword> {
   bool passwordHidden = true;
   var current_password = "";
   var new_password = "";
-  
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -197,17 +232,10 @@ class _ChangePasswordState extends State<ChangePassword> {
 
             //LogIn Obrazac
             const ChangePasswordForm(),
-
-           
-
-            
-          
-
-            
           ],
         ),
       ),
-       bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.qr_code_scanner_rounded),
