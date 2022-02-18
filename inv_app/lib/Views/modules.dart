@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class Modules extends StatefulWidget {
   const Modules({Key? key}) : super(key: key);
@@ -7,6 +8,13 @@ class Modules extends StatefulWidget {
 }
 
 class _ModulesState extends State<Modules> {
+  @override
+  void dispose() {
+    Hive.close();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +30,8 @@ class _ModulesState extends State<Modules> {
               color: Colors.blue, borderRadius: BorderRadius.circular(10)),
           child: TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/home', (Route<dynamic> route) => false);
             },
             child: const Text(
               'Enter',

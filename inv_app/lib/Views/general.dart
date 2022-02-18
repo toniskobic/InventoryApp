@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:inv_app/Assets/custom.dart';
+import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/State/filterState.dart';
 import 'package:inv_app/Views/Home/homepage.dart';
+import 'package:inv_app/boxes.dart';
 import 'package:provider/provider.dart';
 
 class GeneralStatefulWidget extends StatefulWidget {
@@ -14,6 +17,16 @@ class GeneralStatefulWidget extends StatefulWidget {
 class HomeScreenState extends State<GeneralStatefulWidget> {
   int _selectedIndex = 1;
   PageController pageController = new PageController();
+
+  /* @override
+  void initState() {
+    super.initState();
+
+    Box box = Hive.box<UserStorage>('users');
+    UserStorage userId = box.getAt(0);
+
+    print(userId.userId);
+  } */
 
   static List<Widget> _widgetOptions = <Widget>[
     Text(
