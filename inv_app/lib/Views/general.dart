@@ -53,7 +53,14 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
   }
 
   _nfcDialog() async {
-    bool isAvailable = await NfcManager.instance.isAvailable();
+    bool isAvailable = false;
+    try {
+      isAvailable = await NfcManager.instance.isAvailable();
+    } catch (e) {
+      Get.snackbar(
+          'Error', 'NFC may not be supported or may be temporarily turned off.',
+          duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
+    }
     if (!isAvailable) {
       Get.snackbar(
           'Error', 'NFC may not be supported or may be temporarily turned off.',

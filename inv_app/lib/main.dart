@@ -50,8 +50,13 @@ class RouteGenerator {
   }
 }
 
-Future<bool> checkState() async {
-  return await Hive.boxExists('users');
+bool checkState() {
+  bool userLogedIn = false;
+  Box box = Hive.box<UserStorage>('users');
+  if (box.length > 0) {
+    userLogedIn = box.getAt(0) != null ? true : false;
+  }
+  return userLogedIn;
 }
 
 class MyApp extends StatelessWidget {
@@ -73,7 +78,7 @@ class MyApp extends StatelessWidget {
         '/qr': (context) => QRScreen()
       },
       onGenerateRoute: RouteGenerator.generateRoute,
-      home: Login(),
+      home: checkState() ? Modules() : Login(),
     );
   }
 }

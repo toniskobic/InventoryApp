@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:inv_app/Model/userStorage.dart';
 import 'package:inv_app/api/loginService.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:inv_app/Views/Forms/passwordReset.dart';
@@ -16,7 +17,20 @@ class LoginForm extends StatefulWidget {
 class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
 
-  bool passwordHidden = false;
+  bool passwordHidden = true;
+
+  bool isLoading = false;
+  late bool exists;
+
+  Future<bool> checkHiveExists() async {
+    bool exists = await Hive.boxExists('users');
+    return exists ? Future<bool>.value(true) : Future<bool>.value(false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   User user = User();
   void _logIn() {
@@ -107,27 +121,23 @@ class LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.only(
                 left: 15.0, right: 15.0, top: 15, bottom: 0),
             child: Center(
-              child: Container(
-                height: 40,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _logIn();
-                    /*
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Modules()));
-                    */
-                  },
-                  child: const Text(
-                    'LOGIN',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
+                child: Container(
+              height: 40,
+              width: 250,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: ElevatedButton(
+                onPressed: () {
+                  _logIn();
+                },
+                child: const Text(
+                  'LOGIN',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
-            ),
+            )
+                //: Center(child: CircularProgressIndicator()),
+                ),
           ),
         ],
       ),
@@ -221,28 +231,6 @@ class _LoginState extends State<Login> {
                   },
                   child: const Text(
                     'SIGN UP',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ),
-              ),
-            ),
-
-            //LogIn Google
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 15),
-              child: Container(
-                height: 40,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/modules');
-                  },
-                  child: const Text(
-                    'Login with Google',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),

@@ -22,6 +22,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  List<Resource> resources = [];
   List<Resource> resursi = [];
   List<Borrowed> borrowedResourcesList = [];
   String searchText = '';
@@ -33,19 +34,9 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
 
-    getResources()
-        .then((response) => {
-              if (mounted)
-                {
-                  setState(() {
-                    resursi = response;
-                  })
-                }
-            })
-        .catchError((e) {
-      Get.snackbar('Error', '$e',
-          duration: Duration(seconds: 2), backgroundColor: Colors.red[100]);
-      print('$e');
+    updateResource();
+    setState(() {
+      resources = List.from(resursi);
     });
   }
 
@@ -110,14 +101,38 @@ class _HomepageState extends State<Homepage> {
   }
 
   Widget resursiListView() {
-    if (resursi.length < 0) {
+    if (resursi.length != resources.length) {
+      updateResource();
+    }
+    if (resursi.length == 0) {
       return circularWaiting();
     }
-    print(filterState);
-    if (filterState.sort != null && filterState.selectedTagsList != []) {
-      resursi.sort(
-          (a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+    if (filterState.sort != null) {
+      if (filterState.sort == Sort.nameAZ) {
+        resursi.sort(
+            (a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+      } else if (filterState.sort == Sort.nameZA) {
+        resursi.sort(
+            (b, a) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+      }
     }
+    if (filterState.selectedTagsList!.isNotEmpty) {
+      var toFilter = [];
+
+      filterState.selectedTagsList!.forEach((tag) {
+        resursi.forEach((resurs) {
+          if (resurs.tags != []) {
+            resurs.tags!.forEach((tagR) {
+              if (tagR.id == tag.id) {
+                toFilter.add(resurs);
+              }
+            });
+          }
+        });
+      });
+      resursi.removeWhere((resurs) => !toFilter.contains(resurs));
+    }
+    print(resursi.length);
     return ListView.builder(
         itemCount: resursi.length,
         itemBuilder: (context, index) => resursi[index].quantity! > 0
@@ -200,6 +215,23 @@ class _HomepageState extends State<Homepage> {
           }
           return const SizedBox();
         });
+  }
+
+  void updateResource() {
+    getResources()
+        .then((response) => {
+              if (mounted)
+                {
+                  setState(() {
+                    resursi = response;
+                  })
+                }
+            })
+        .catchError((e) {
+      Get.snackbar('Error', '$e',
+          duration: Duration(seconds: 2), backgroundColor: Colors.red[100]);
+      print('$e');
+    });
   }
 
   Widget buildSearch() => SearchWidget(
