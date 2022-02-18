@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/Model/userStorage.dart';
@@ -54,29 +55,9 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
   _nfcDialog() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
     if (!isAvailable) {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Error'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: const <Widget>[
-                    Text(
-                        'NFC may not be supported or may be temporarily turned off.'),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('GOT IT'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
+      Get.snackbar(
+          'Error', 'NFC may not be supported or may be temporarily turned off.',
+          duration: Duration(seconds: 3), backgroundColor: Colors.red[100]);
     }
   }
 
