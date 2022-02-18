@@ -103,6 +103,9 @@ class _HomepageState extends State<Homepage> {
   Widget resursiListView() {
     if (resursi.length != resources.length) {
       updateResource();
+      setState(() {
+        resources = List.from(resursi);
+      });
     }
     if (resursi.length == 0) {
       return circularWaiting();

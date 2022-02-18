@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inv_app/Assets/custom.dart';
 import 'package:inv_app/api/registracijaService.dart';
 import 'package:inv_app/Classes/user.dart';
 import 'package:get/get.dart';
@@ -203,7 +204,7 @@ class _RegistrationState extends State<Registration> {
                   ),
                 ),
 
-                //LogIn Button
+                //SignUp Button
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Container(
@@ -227,7 +228,7 @@ class _RegistrationState extends State<Registration> {
                 const Text("Already have an account?"),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 15.0, right: 15.0, top: 15, bottom: 0),
+                      left: 15.0, right: 15.0, top: 15, bottom: 15),
                   child: Container(
                       height: 40,
                       width: 250,
@@ -235,10 +236,11 @@ class _RegistrationState extends State<Registration> {
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(20)),
                       child: ElevatedButton(
-                          child: const Text("Login"),
                           onPressed: () {
                             Navigator.pop(context);
-                          })
+                          },
+                          child: const Text("Login"))
+                         
                       /* child: TextButton(
                   onPressed: () {
                     Navigator.push(context,
@@ -252,27 +254,7 @@ class _RegistrationState extends State<Registration> {
                       ),
                 ),
 
-                //LogIn Google
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, right: 15.0, top: 15, bottom: 0),
-                  child: Container(
-                    height: 40,
-                    width: 250,
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                      child: const Text(
-                        'Sign up with Google',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ),
+               
               ],
             ),
           ),

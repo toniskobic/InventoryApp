@@ -95,26 +95,36 @@ class HomeScreenState extends State<GeneralStatefulWidget> {
         appBar: AppBar(
             title: Text('Inventory App'),
             centerTitle: true,
-            backgroundColor: Colors.white70,
-            foregroundColor: Colors.black),
+            backgroundColor: Colors.black87,
+            foregroundColor: Colors.white),
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(FluentIcons.scan_object_24_filled), label: 'AR'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.qr_code_scanner_rounded),
-                label: 'QR code scanner'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled), label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: 'My profile'),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue[800],
-          onTap: _onItemTapped,
-        ));
+        bottomNavigationBar: new Theme(
+            data: Theme.of(context).copyWith(
+                // sets the background color of the BottomNavigationBar
+                canvasColor: Colors.black87,
+                // sets the active color of the BottomNavigationBar if Brightness is light
+                primaryColor: Colors.red,
+                textTheme: Theme.of(context)
+                    .textTheme
+                    .copyWith(caption: new TextStyle(color: Colors.yellow))),
+            child: BottomNavigationBar(
+              backgroundColor: Colors.grey[100],
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Icon(FluentIcons.scan_object_24_filled), label: 'AR'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.qr_code_scanner_rounded),
+                    label: 'QR code scanner'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home_filled), label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: 'My profile'),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.blue[800],
+              onTap: _onItemTapped,
+            )));
   }
 }
