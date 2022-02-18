@@ -88,7 +88,7 @@ class HomeFormState extends State<HomeForm> {
             child: ElevatedButton(
               onPressed: () {
                 Hive.close();
-                Hive.deleteFromDisk();
+                //Hive.deleteFromDisk();
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/login', (Route<dynamic> route) => false);
               },

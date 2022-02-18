@@ -12,7 +12,7 @@ class FilterWidget extends StatefulWidget {
   _FilterWidgetState createState() => _FilterWidgetState();
 }
 
-enum Sort { nameAZ, nameZA, tagAZ, tagZA }
+enum Sort { nameAZ, nameZA }
 
 class _FilterWidgetState extends State<FilterWidget> {
   Sort? sort = null;
@@ -198,9 +198,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                             /* filterState.changeSort(Sort.nameAZ);
                               filterState.selectedTagsList; */
                             setState(() {
-                              sort = Sort.nameAZ;
+                              sort = null;
                               selectedTagsList = [];
                             });
+                            Navigator.pop(context, FilterState(null, []));
                           },
                           child: const Text('CLEAR'),
                         ),
