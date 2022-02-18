@@ -16,7 +16,7 @@ class LoginForm extends StatefulWidget {
 class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
 
-  bool passwordHidden = true;
+  bool passwordHidden = false;
 
   User user = User();
   void _logIn() {
