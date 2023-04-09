@@ -11,3 +11,7 @@ The system provides two types of resources: individual (e.g. laptop) and group (
 For each resource, the location is determined, for example Shelf A, Shelf B, Cabinet C, ... and coordinates. Each of these locations has a special AR marker that serves for the application to display the location of the requested element in space.
 
 The implementation of AR functionality is made possible using [ARwayKit SDK](https://www.arway.ai/).
+
+## System arhitecture
+
+![System arhitecture](https://github.com/tskobic/InventoryApp/blob/main/app_architecture.png)
