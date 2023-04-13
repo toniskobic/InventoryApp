@@ -17,4 +17,4 @@ The implementation of AR functionality is made possible using [ARwayKit SDK](htt
 
 ## System arhitecture
 
-![System arhitecture](https://github.com/tskobic/InventoryApp/blob/main/app_architecture.png)
+![System arhitecture](https://github.com/tskobic/InventoryApp/blob/main/asset/images/app_architecture.png)

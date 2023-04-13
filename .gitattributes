@@ -1,2 +1,2 @@
-inv_app/unity/** linguist-vendored
-inv_app/android/unityLibrary/** linguist-vendored
+unity/** linguist-vendored
+android/unityLibrary/** linguist-vendored

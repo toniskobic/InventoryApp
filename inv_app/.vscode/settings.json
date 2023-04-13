@@ -1,6 +1,0 @@
-{
-    "editor.formatOnSave": false,
-    "[dart]": {
-        "editor.rulers": [],
-    },
-}
