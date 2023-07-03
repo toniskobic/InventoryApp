@@ -21,17 +21,17 @@ module.exports = ({ env }) => ({
     config: {
       provider: 'nodemailer',
       providerOptions: {
-        host: env('SMTP_HOST', '***REMOVED***'),
-        port: env('SMTP_PORT', 587),
+        host: env('SMTP_HOST', ''),
+        port: env('SMTP_PORT', 0),
         auth: {
-          user: env('***REMOVED***'),
-          pass: env('***REMOVED***'),
+          user: env(''),
+          pass: env(''),
         },
         // ... any custom nodemailer options
       },
       settings: {
-        defaultFrom: '***REMOVED***',
-        defaultReplyTo: '***REMOVED***',
+        defaultFrom: '',
+        defaultReplyTo: '',
       },
     },
   },

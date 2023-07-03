@@ -23,8 +23,8 @@ module.exports = {
         
         await strapi.plugins['email'].services.email.send({
             to:params.identifier,
-            from:"***REMOVED***",
-            replyTo:"***REMOVED***",
+            from:"",
+            replyTo:"",
             subject: 'Password reset - STRAPI',
             text: `This is your new password ${pass}`,
             
