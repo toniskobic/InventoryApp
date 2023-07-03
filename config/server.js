@@ -3,7 +3,7 @@ module.exports = ({ env }) => ({
   port: env.int('PORT', 1337),
   admin: {
     auth: {
-      secret: env('ADMIN_JWT_SECRET', '***REMOVED***'),
+      secret: env('ADMIN_JWT_SECRET', ''),
     },
     watchIgnoreFiles: [
       '**/invApp-strapi/qr.svg**',
